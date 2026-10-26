@@ -26,6 +26,29 @@
       "notes": "Operator-reported physical game on Tang Nano 9K, 2026-10-26; exact-SHA post-route STA report not archived. SRAM-only."
     },
     {
+      "id": "konsol-breakout-rgb-v0-1-0",
+      "name": "KonSol RetroStation BREAKOUT RGB v0.1.0",
+      "hardware_class": "FPGA",
+      "board_ids": [
+        "tang-nano-9k"
+      ],
+      "implementation": "Independent Verilog Breakout HDMI game, 32 bricks, 3 lives, USB-UART input; no CPU",
+      "evidence_level": "operator_board_pass",
+      "source_url": "https://github.com/AIDevelopersMonster/Sipeed-FPGA/tree/main/games/breakout-rgb",
+      "loader_url": "https://aidevelopersmonster.github.io/Sipeed-FPGA/lab04/web-loader/",
+      "distribution": {
+        "status": "released",
+        "type": "gowin_fs",
+        "file": "pikosol_breakout_rgb_nano9k.fs",
+        "size_bytes": 2070601,
+        "sha256": "4cf80dbd008b0d41d4316bf63db952190c03940a4ffb1ffc00cab09210ae8789",
+        "release_url": "https://github.com/AIDevelopersMonster/Sipeed-FPGA/releases/tag/konsol-breakout-rgb-v0.1.0",
+        "download_url": "https://github.com/AIDevelopersMonster/Sipeed-FPGA/releases/download/konsol-breakout-rgb-v0.1.0/pikosol_breakout_rgb_nano9k.fs"
+      },
+      "license_note": "Original RTL MIT; external SimpleVOut ISC and Gowin vendor terms. No external ROM.",
+      "notes": "26 Oct 2026 operator successfully completed and won a physical Tang Nano 9K game; Icarus smoke PASS and Gowin PnR with positive setup/hold/recovery/removal sampled margins. Public binary independently re-downloaded by release script with matching SHA256. Browser auto-download configured, new end-to-end WebUSB BOARD PASS not yet confirmed."
+    },
+    {
       "id": "arduino-uno-breakout-touch",
       "name": "Arkanoid / Breakout Touch for Arduino UNO",
       "hardware_class": "MCU",

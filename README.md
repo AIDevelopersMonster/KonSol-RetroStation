@@ -18,6 +18,7 @@
 
 | Направление | Проект | Статус | Исходники / запуск |
 | --- | --- | --- | --- |
+| FPGA / Tang Nano 9K | **BREAKOUT RGB v0.1.0** | Оператор прошёл игру до победы; релиз SHA-256 подтверждён | [Исходники](https://github.com/AIDevelopersMonster/Sipeed-FPGA/tree/main/games/breakout-rgb) · [Релиз](https://github.com/AIDevelopersMonster/Sipeed-FPGA/releases/tag/konsol-breakout-rgb-v0.1.0) |
 | FPGA / Tang Nano 9K | **PiKoSoL PONG RGB v1.2** | Оператор подтвердил работу на плате; опубликован проверяемый бинарник | [Проект](https://github.com/AIDevelopersMonster/Sipeed-FPGA/tree/main/games/pong-rgb) · [Релиз](https://github.com/AIDevelopersMonster/Sipeed-FPGA/releases/tag/pikosol-pong-rgb-v1.2) |
 | MCU / Arduino UNO + TFT | **Arkanoid / Breakout Touch** | Исходники и тестовый план для конкретной аппаратной конфигурации | [Проект](https://github.com/AIDevelopersMonster/Arduino-UNO-Shields/tree/main/shields/MAR2406-2.4-TFT/examples/Arkanoid_Breakout_Touch) |
 | MCU / Arduino UNO + TFT + SD | **Tic-Tac-Toe** | Закрытая LAB-03; тестовая сборка подтверждена | [LAB-03](https://github.com/AIDevelopersMonster/Arduino-UNO-Shields/tree/main/labs/03-UNO-MAR2406-TFT) |
@@ -27,6 +28,10 @@
 | SBC | — | Пока нет зарегистрированной проверенной игровой реализации | [Архитектура](docs/ARCHITECTURE.md) |
 
 **Статус относится к конкретной реализации и представленным доказательствам**. Публикация исходников, успешная сборка, опыт на плате и публикация бинарника — разные события. Подробнее: [аудит](docs/INVENTORY.md).
+
+### Запуск игр на Tang Nano 9K
+
+**BREAKOUT RGB v0.1.0:** откройте [PiKoSoL WebUSB Loader](https://aidevelopersmonster.github.io/Sipeed-FPGA/lab04/web-loader/), выберите профиль **KonSol BREAKOUT RGB**, получите `.fs` с GitHub Pages (или из [релиза](https://github.com/AIDevelopersMonster/Sipeed-FPGA/releases/tag/konsol-breakout-rgb-v0.1.0)), дождитесь проверки SHA-256 и загрузите **только в SRAM**. Для игры используется [PowerShell UART-контроллер](https://github.com/AIDevelopersMonster/Sipeed-FPGA/blob/main/games/breakout-rgb/tools/control_breakout.ps1) через COM-порт FT2232 B, 115200 8N1. Работа браузерной автоматической загрузки на физической плате ещё отдельно не проверена; использование локального Gowin Programmer уже подтверждено оператором.
 
 ### Запуск первого проекта — PONG RGB на Tang Nano 9K
 
