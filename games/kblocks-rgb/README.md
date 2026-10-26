@@ -1,6 +1,6 @@
 # KonSol RetroStation — RS-004 K-BLOCKS RGB v0.1.0
 
-**STATUS: SOURCE CANDIDATE. NOT SIM PASS / NOT GOWIN FIT PASS / NOT BOARD PASS / NOT RELEASED.**
+**STATUS: RTL SIM PASS (53 checks; CI + local operator). GOWIN FIT/STA NOT CONFIRMED. BOARD NOT RUN. NOT RELEASED.**
 
 Standalone original falling-block puzzle for **Sipeed Tang Nano 9K (GW1NR-9C)**. The RTL implements gameplay directly in Verilog, without PicoRV32, emulation, SD, external RAM or a framebuffer. It reuses the verified PiKoSoL HDMI/UART/video-clock infrastructure by referencing a **separate Sipeed-FPGA checkout**; no vendor RTL is copied into KonSol-RetroStation, and PONG/BREAKOUT are unchanged.
 
@@ -55,11 +55,11 @@ Set-Location C:\GitHub\KonSol-RetroStation
 
 - **Testbench:** 28 shape orientations (4 cells each), wall/floor collision, start, movement, rotation including queued input at the gravity boundary, accelerated gravity, lock, **two adjacent lines**, single line + row shift, top-out, restart and stream handshake.
 - **Build:** reads the separate Sipeed-FPGA checkout, records its current Git commit, copies pinned SVO sources with SHA-256 manifest validation into a timestamped isolated directory; runs `gw_sh.exe` in a separate workdir; prints bitstream location and SHA-256. Does NOT program the FPGA.
-- **Expected console marker after actual simulator success:** `RS004_KBLOCKS_TB_PASS`. This marker has **not been observed in this authoring environment**.
+- **RTL SIM PASS (26 Oct 2026):** GitHub Actions Icarus 12 (`RS004_KBLOCKS_TB_PASS checks=53`; [run 40300389185](https://github.com/AIDevelopersMonster/KonSol-RetroStation/actions/runs/40300389185)); operator Windows PowerShell 7.6.8 with MSYS2 UCRT64 Icarus 13.0 (`RS004_KBLOCKS_TB_PASS checks=53`, `RS004_TB_EXIT_0`). The Icarus timescale warning is non-fatal for this test. See [simulation receipt](acceptance/RS004_SIM_2026-10-26.md).
 - Save the **full PnR + STA report**, with all clock constraints, unconstrained-path checks and positive setup/hold/recovery/removal for **exact built candidate**. A checksum from any older game is not applicable.
 - No `.fs` is committed into the source tree or advertised for browser loading until Gowin/PnR and physical tests succeed.
 
-### Only after SIM + FIT + STA acceptance — 3 board tests
+### Only after FIT + STA acceptance — 3 board tests
 
 1. **JTAG SRAM + HDMI:** load the exact SHA-256-identified candidate using the existing SRAM-only programmer on Tang Nano 9K; no Flash operations. Confirm field, next-piece preview, selected palette, raster stability.
 2. **Controls + line clearing:** connect UART 115200 8N1; check left/right, rotation, soft drop and at least one full line removal. Check the line counter and the next figure.
@@ -69,7 +69,7 @@ Set-Location C:\GitHub\KonSol-RetroStation
 
 ## EN summary
 
-**RS-004 K-BLOCKS** is a *source candidate*, not a released hardware product. The 10×20 native Verilog gameplay grid implements seven four-cell shapes, four orientations, movement, soft drop, locking, complete-row compaction, next-piece preview, decimal cleared-line counter, game over and restart. HDMI 640×480 and UART 115200 reuse the **existing hardware-validated** video path. The game itself still needs the Icarus test PASS, Gowin FIT/full STA and operator physical verification.
+**RS-004 K-BLOCKS** is a *source candidate*, not a released hardware product. The 10×20 native Verilog gameplay grid implements seven four-cell shapes, four orientations, movement, soft drop, locking, complete-row compaction, next-piece preview, decimal cleared-line counter, game over and restart. HDMI 640×480 and UART 115200 reuse the **existing hardware-validated** video path. Both GitHub Actions and the operator's local Icarus simulation now PASS (53 checks). Gowin FIT/full STA and physical-board verification are **not** established.
 
 ### License / boundaries
 
