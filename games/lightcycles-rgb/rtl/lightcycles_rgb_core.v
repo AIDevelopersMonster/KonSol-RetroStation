@@ -100,8 +100,21 @@ module lightcycles_rgb_core #(
     wire [4:0] bnx=forward_x(bx,b_effective);
     wire [4:0] bny=forward_y(by,b_effective);
     wire same_target=(anx==bnx && any_==bny);
-    wire a_crash=!can_advance(ax,ay,a_effective) || same_target;
-    wire b_crash=!can_advance(bx,by,b_effective) || same_target;
+    // Direct array references: combinational collision logic must reevaluate
+    // when trail RAM changes, not only when position/function arguments change.
+    // Explicit wall checks prevent 5-bit coordinate wraparound.
+    wire a_wall=(a_effective==NORTH && ay==0) ||
+                (a_effective==SOUTH && ay==YMAX) ||
+                (a_effective==WEST && ax==0) ||
+                (a_effective==EAST && ax==XMAX);
+    wire b_wall=(b_effective==NORTH && by==0) ||
+                (b_effective==SOUTH && by==YMAX) ||
+                (b_effective==WEST && bx==0) ||
+                (b_effective==EAST && bx==XMAX);
+    wire a_occupied=trail_a[any_][anx] || trail_b[any_][anx];
+    wire b_occupied=trail_a[bny][bnx] || trail_b[bny][bnx];
+    wire a_crash=a_wall || a_occupied || same_target;
+    wire b_crash=b_wall || b_occupied || same_target;
 
     // UART commands. w/a/s/d: P1 N/W/S/E. i/j/k/l: P2 N/W/S/E.
     // A single key-down byte is enough; no held-direction state required.
