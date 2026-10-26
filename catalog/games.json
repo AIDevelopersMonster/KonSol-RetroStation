@@ -49,6 +49,23 @@
       "notes": "26 Oct 2026 operator successfully completed and won a physical Tang Nano 9K game; Icarus smoke PASS and Gowin PnR with positive setup/hold/recovery/removal sampled margins. Public binary independently re-downloaded by release script with matching SHA256. Browser auto-download configured, new end-to-end WebUSB BOARD PASS not yet confirmed."
     },
     {
+      "id": "konsol-kblocks-rgb-v0-1-0",
+      "name": "KonSol RetroStation K-BLOCKS RGB v0.1.0",
+      "hardware_class": "FPGA",
+      "board_ids": [
+        "tang-nano-9k"
+      ],
+      "implementation": "Original native Verilog 10x20 falling-block puzzle, 7 shapes, HDMI and UART; no CPU",
+      "evidence_level": "operator_board_pass",
+      "source_url": "https://github.com/AIDevelopersMonster/KonSol-RetroStation/tree/main/games/kblocks-rgb",
+      "loader_url": "https://aidevelopersmonster.github.io/KonSol-RetroStation/console/",
+      "distribution": {
+        "status": "source_only"
+      },
+      "license_note": "Original RTL MIT; SVO ISC; Gowin vendor terms. No commercial game ROM or art.",
+      "notes": "26 Oct 2026: SIM PASS 53 tests; Gowin build/PnR resource fit and positive sampled STA; operator reports game works on Tang Nano 9K. Exact local candidate 2,070,601 bytes SHA256 F842B196CB4A56E0C18DEF1C471CBDDC82F59F0B552A27F553FDFF9692BBDC4E. Binary release and new browser WebUSB BOARD PASS still pending."
+    },
+    {
       "id": "arduino-uno-breakout-touch",
       "name": "Arkanoid / Breakout Touch for Arduino UNO",
       "hardware_class": "MCU",
