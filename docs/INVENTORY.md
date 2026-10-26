@@ -1,12 +1,13 @@
 # Technical inventory / Техническая инвентаризация
 
-**Snapshot:** 2026-10-26. Live GitHub repositories inspected. This is a **source and publication audit**, not a new bench test.
+**Snapshot:** 2026-10-26, updated after the BREAKOUT RGB v0.1.0 release. Live GitHub repositories inspected. This is a **source and publication audit**, not a new independent bench test.
 
 ## RU: что подтверждено
 
 | Проект | Конкретный источник | Наблюдаемые доказательства | Ограничение |
 | --- | --- | --- | --- |
 | **KonSol RetroStation** | [Репозиторий](https://github.com/AIDevelopersMonster/KonSol-RetroStation) | Создан публичный репозиторий; v0.1 оформляет структуру и каталог | Новых игр здесь нет; исходный README был единственным файлом |
+| **KonSol BREAKOUT RGB v0.1.0** | [RTL и сборка](https://github.com/AIDevelopersMonster/Sipeed-FPGA/tree/main/games/breakout-rgb) · [GitHub Release](https://github.com/AIDevelopersMonster/Sipeed-FPGA/releases/tag/konsol-breakout-rgb-v0.1.0) | Оператор подтвердил HDMI, управление UART и победу на реальном Tang Nano 9K 26.10.2026; SIM smoke/PnR и квитанции STA; опубликован .fs SHA-256 4CF80D…8789 | Не независимая сертификация; отдельный сквозной WebUSB BOARD PASS не зафиксирован |
 | **PiKoSoL PONG RGB v1.2** | [RTL и сборка](https://github.com/AIDevelopersMonster/Sipeed-FPGA/tree/main/games/pong-rgb) · [GitHub Release](https://github.com/AIDevelopersMonster/Sipeed-FPGA/releases/tag/pikosol-pong-rgb-v1.2) | Оператор подтвердил Pong на реальном Tang Nano 9K 26.10.2026; публичный `.fs` имеет проверяемый SHA-256 | Отдельный post-route STA-отчёт, связанный именно с опубликованным SHA, не архивирован в репозитории |
 | **WebUSB / Web Serial** | [Загрузчик](https://aidevelopersmonster.github.io/Sipeed-FPGA/lab04/web-loader/) · [Управление](https://aidevelopersmonster.github.io/Sipeed-FPGA/pong-rgb/) | Функционирующий существующий маршрут для Tang Nano 9K: JTAG A / UART B, SRAM | Не поддерживает автоматическую идентификацию произвольных плат |
 | **Arduino UNO + TFT LAB-03** | [LAB-03](https://github.com/AIDevelopersMonster/Arduino-UNO-Shields/tree/main/labs/03-UNO-MAR2406-TFT) | Завершена лаборатория с тестами дисплея, touch и SD; Tic-Tac-Toe в TEST-08 с BUILD PASS | Не объявлять каждый эскиз отдельным физическим BOARD PASS |
@@ -16,6 +17,17 @@
 | **Flappy Bird ESP8266** | [Репозиторий](https://github.com/AIDevelopersMonster/Flappy-Bird-on-ESP8266) · [Видео](https://youtu.be/M-zgmhmOkPY) | Исходник, SSD1306 128×64, кнопка, динамик и демонстрация | Лицензия GPL-3.0; повторная приёмка в RetroStation не выполнялась |
 | **LCD Keypad Shield games** | [Коллекция](https://github.com/AIDevelopersMonster/arduino-lcd-keypad-shield-games) | 17 игр, исторические видео автора коллекции, ссылки на первоначальных авторов | Сборник адаптаций; лицензии отдельных игр необходимо разбирать индивидуально |
 | **SBC** | — | Не найдено конкретной игры на SBC, принятой в данном каталоге | Направление, а не готовая платформа |
+
+### BREAKOUT RGB v0.1.0 — второй опубликованный FPGA-бинарник
+
+- Board: `Sipeed Tang Nano 9K / GW1NR-9C`; 640×480 HDMI, 115200 8N1 UART.
+- Game: independent Verilog hardware engine, 32 bricks, three lives, four palettes, no PicoRV32.
+- File: `pikosol_breakout_rgb_nano9k.fs`, **2 070 601 bytes**.
+- Release: [konsol-breakout-rgb-v0.1.0](https://github.com/AIDevelopersMonster/Sipeed-FPGA/releases/tag/konsol-breakout-rgb-v0.1.0) (prerelease).
+- SHA-256: `4cf80dbd008b0d41d4316bf63db952190c03940a4ffb1ffc00cab09210ae8789`.
+- Operator-reported Gowin PnR: 1612/8640 Logic (19%), 510 registers, BSRAM 0. Extracted 25-path minima: Setup +6.035 ns, Hold +0.550 ns, Recovery +0.232 ns, Removal +0.870 ns; summary setup/hold violations 0.
+- Hardware: operator completed a winning game; [RS-003 acceptance](acceptance/RS003_BREAKOUT_BOARD_2026-10-26.md).
+- Browser programming is documented; its own end-to-end board result is still pending.
 
 ### Точный опубликованный PONG
 
@@ -40,6 +52,6 @@
 
 ## EN: findings
 
-The first release candidate of KonSol RetroStation is **a registry, not a game binary**. PiKoSoL PONG v1.2 is the existing board-operated FPGA anchor and the only game binary linked from the catalog. Arduino UNO TFT Breakout and Tic-Tac-Toe, Snake, ESP8266 Flappy Bird and historical LCD Keypad Shield games are documented MCU references with differing levels of evidence. No SBC game is claimed as released.
+KonSol RetroStation remains **a registry, not a game binary mirror**. There are now **two** operator-board-tested FPGA games with public SHA-256-pinned prereleases: PONG RGB v1.2 and BREAKOUT RGB v0.1.0. Arduino UNO TFT Breakout and Tic-Tac-Toe, Snake, ESP8266 Flappy Bird and historical LCD Keypad Shield games are documented MCU references with differing levels of evidence. No SBC game is claimed as released.
 
-The exact Pong release file and its SHA-256 are recorded above and in [catalog/games.json](../catalog/games.json). An operator's successful visual hardware test is reported; no archived STA report is tied to that binary hash. Original code and distribution rights stay with the source projects.
+Both exact release files and SHA-256 digests are recorded above and in [catalog/games.json](../catalog/games.json). Operator board reports exist; a full independent binary-specific STA certification is not claimed. Original code and distribution rights stay with the source projects.

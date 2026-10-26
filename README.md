@@ -2,7 +2,7 @@
 
 **Open FPGA, MCU & SBC Retro Gaming Platform**
 
-[Русский](#русский) · [English](#english) · [Architecture](docs/ARCHITECTURE.md) · [Project inventory](docs/INVENTORY.md) · [Roadmap](docs/ROADMAP.md) · [Machine-readable catalog](catalog/README.md)
+[Русский](#русский) · [English](#english) · [Architecture](docs/ARCHITECTURE.md) · [Project inventory](docs/INVENTORY.md) · [Roadmap](docs/ROADMAP.md) · [Machine-readable catalog](catalog/README.md) · [Next games for Tang Nano 9K](docs/FPGA_9K_GAMES_NEXT.md)
 
 **Project founded: 26 October 2026.** [Founding video — KonSol RetroStation: Project Day 1](https://youtu.be/Hjy9AaBeEGs).
 
@@ -64,7 +64,7 @@ Set-Location .\KonSol-RetroStation
 .\tools\check_catalog.ps1
 ```
 
-**Первые три работы:** [RS-001 / RS-002 / RS-003](docs/ROADMAP.md). Предлагаемый следующий FPGA-эксперимент — собственный **Breakout**, используя проверенную инфраструктуру Pong в Sipeed-FPGA.
+**Первые три работы:** [RS-001 / RS-002 / RS-003](docs/ROADMAP.md). **RS-003 BREAKOUT v0.1.0 уже реализован, испытан оператором и опубликован в prerelease.** Следующие кандидаты для Tang Nano 9K и критерии выбора: [RS-004+](docs/FPGA_9K_GAMES_NEXT.md).
 
 ## English
 
@@ -72,7 +72,9 @@ Set-Location .\KonSol-RetroStation
 
 It is **not** a universal firmware image or a claim that a historical console emulator already works. Individual projects retain their own sources, authorship, licenses, hardware targets and evidence. The central repository is a **catalog and project governance layer**, not a vendor-code archive.
 
-### First working FPGA title
+### Two operator-board-tested FPGA titles
+
+[BREAKOUT RGB v0.1.0](https://github.com/AIDevelopersMonster/Sipeed-FPGA/tree/main/games/breakout-rgb) is the second independent native Verilog game, with 32 bricks, three lives, HDMI and a PowerShell UART controller. The operator completed a game to victory on a physical Tang Nano 9K; a [SHA-256-pinned public prerelease](https://github.com/AIDevelopersMonster/Sipeed-FPGA/releases/tag/konsol-breakout-rgb-v0.1.0) is available. Its browser programming profile has not received a separate complete end-to-end hardware acceptance.
 
 [PiKoSoL PONG RGB v1.2](https://github.com/AIDevelopersMonster/Sipeed-FPGA/tree/main/games/pong-rgb) is an independently implemented Verilog HDMI game for the **Sipeed Tang Nano 9K**. It has operator-reported physical-board success and a [public SHA-256-pinned release](https://github.com/AIDevelopersMonster/Sipeed-FPGA/releases/tag/pikosol-pong-rgb-v1.2).
 
@@ -90,6 +92,6 @@ It is **not** a universal firmware image or a claim that a historical console em
 - Preserve third-party notices, licenses and ROM restrictions.
 - Prefer reproducible PowerShell/CLI workflows; run only 2–3 focused board tests before deciding whether a new hardware investigation is worthwhile.
 
-Start with [Architecture](docs/ARCHITECTURE.md), [Inventory](docs/INVENTORY.md), [Roadmap](docs/ROADMAP.md), and the [catalog](catalog/README.md).
+Start with [Architecture](docs/ARCHITECTURE.md), [Inventory](docs/INVENTORY.md), [Roadmap](docs/ROADMAP.md), [next Tang Nano 9K game candidates](docs/FPGA_9K_GAMES_NEXT.md), and the [catalog](catalog/README.md).
 
 **Vision:** from one working game and one board to a carefully documented FPGA, MCU & SBC retro-gaming ecosystem.

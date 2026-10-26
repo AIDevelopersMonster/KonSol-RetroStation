@@ -1,6 +1,16 @@
-# Roadmap v0.1 / План первых трёх работ
+# Roadmap v0.2 / Первые работы и план продолжения
 
 **Rule:** each milestone has a concrete output, acceptance criteria and a stop condition. Dates are not delivery promises.
+
+## Фактический статус на 26.10.2026 / Status snapshot
+
+| Этап | Итог | Остаточный контроль |
+| --- | --- | --- |
+| RS-001 Foundation | Документация и машинный каталог опубликованы в `main` | Независимый Windows PowerShell прогон валидатора не заявлен в этом аудите |
+| RS-002 PONG RGB v1.2 | OPERATOR BOARD PASS; опубликован prerelease с SHA-256 | Полный сквозной браузерный протокол и STA, привязанный к этому же SHA, ещё не архивированы |
+| RS-003 BREAKOUT RGB v0.1.0 | **OPERATOR BOARD PASS, выигранная партия, исходники в main, prerelease опубликован** | Полный независимый STA и браузерный end-to-end BOARD PASS не заявлены |
+
+**Документы:** [Квитанция RS-003](acceptance/RS003_BREAKOUT_BOARD_2026-10-26.md) · [Предложения новых игр RS-004+](FPGA_9K_GAMES_NEXT.md). Первоначальные критерии ниже сохраняются как историческая постановка задачи, а не список ещё не выполненных работ.
 
 ## RU: первые три самостоятельные работы
 
@@ -12,7 +22,7 @@
 
 **Приёмка:** GitHub `main` содержит документы; в реестре ссылки на реально существующие проекты; `.\tools\check_catalog.ps1` завершается строкой `KONSOL_CATALOG_PASS`; ни один исходный RTL/скетч/ROM/.fs не продублирован.
 
-**Статус:** документы и каталог создаются в v0.1; независимую проверку PowerShell на Windows выполняет оператор при синхронизации.
+**Статус (26.10.2026):** документы, каталог и валидатор размещены в `main`. Проверка из текущего удалённого аудита не заменяет локальный запуск PowerShell на Windows.
 
 ### RS-002 — PONG v1.2 как эталонный релиз RetroStation
 
@@ -44,9 +54,13 @@
 
 **Образовательный итог:** одна игровая концепция на MCU и FPGA, с объяснением различий между последовательным кодом MCU и параллельной цифровой логикой.
 
-### После RS-003
+### После RS-003 — выбор RS-004+
 
-Только после завершения этих задач сравнить Snake/Space Invaders/Tetris, проверить лицензии внешних эмуляторов исторических консолей и выбрать первую конкретную SBC-платформу. Не планировать перенос Atari/NES как уже готовую работу.
+RS-003 завершён как аппаратная игра с официальным prerelease, но профиль WebUSB остаётся без отдельной сквозной аппаратной приёмки. Не переносить это ограничение на физическую игру, уже подтверждённую оператором.
+
+Основной кандидат — **K-BLOCKS RGB**, оригинальная игра с падающими фигурами (10×20 клеток). Альтернатива быстрого учебного результата — **LIGHT CYCLES RGB** (две световые трассы). Другие варианты, критерии и риски: [FPGA_9K_GAMES_NEXT.md](FPGA_9K_GAMES_NEXT.md).
+
+**Не создавать новую долгосрочную ветку или отдельный репозиторий до утверждения конкретного RS-004.** Готовые PONG и BREAKOUT не переписывать; HDMI/UART/средства загрузки переиспользовать. Нет оснований уже сейчас объявлять завершённой эмуляцию Atari/NES или SBC-направление.
 
 ## EN: first three milestones
 
@@ -56,4 +70,4 @@
 | **RS-002 Reference PONG** | Reproducible browser-to-board demo bound to a public release SHA | 3 documented tests: SRAM upload/HDMI, UART game controls and 9-point outcome, previous-profile regression |
 | **RS-003 FPGA Breakout** | A small independently authored HDL game in **Sipeed-FPGA**, linked from KonSol | RTL tests, exact-build STA, 2–3 board checks and license-cleared release; 1–2 day stop criterion |
 
-Do not mark RS-002/RS-003 completed merely because they appear in a roadmap. No emulator ROM redistribution. No SPI Flash programming.
+As of 26 October 2026, RS-003 has **operator-confirmed physical victory and a published binary prerelease**, while the WebUSB profile itself remains a separate acceptance item. RS-002 is also operator-board-tested and released, with incomplete exact-hash STA/browser regression evidence. [RS-004+ candidates](FPGA_9K_GAMES_NEXT.md). No emulator ROM redistribution. No SPI Flash programming.
