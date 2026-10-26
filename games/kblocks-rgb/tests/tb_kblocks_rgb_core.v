@@ -29,6 +29,16 @@ module tb_kblocks_rgb_core;
             @(negedge clk);
         end
     endtask
+    // Observe the lock on the FIRST falling frame edge. ST_CLEAR begins its
+    // row-compaction on the immediately following pixel clock, before the
+    // longer frame() helper returns, so checking the full row after frame()
+    // would inspect an already-cleared row rather than the lock result.
+    task lock_frame;
+        begin
+            @(negedge clk); user=1;
+            @(negedge clk); user=0;
+        end
+    endtask
     task send;
         input [7:0] code;
         begin
@@ -110,7 +120,7 @@ module tb_kblocks_rgb_core;
         dut.fall_ctr=8'd29;
         dut.field_rows[18]=10'h0FF;
         dut.field_rows[19]=10'h0FF;
-        frame();expect_state(2);
+        lock_frame();expect_state(2);
         if(dut.field_rows[18]!==10'h3FF || dut.field_rows[19]!==10'h3FF)
             $fatal(1,"lock must merge all cells in each row");
         checks=checks+1;
@@ -129,7 +139,7 @@ module tb_kblocks_rgb_core;
         dut.fall_ctr=8'd29;
         dut.field_rows[18]=0;
         dut.field_rows[19]=10'h3FC;
-        frame();expect_state(2);
+        lock_frame();expect_state(2);
         repeat(70) @(negedge clk);
         expect_state(1);
         if(dut.lines_ones!==3 || dut.field_rows[19]!==10'h003)
@@ -143,7 +153,7 @@ module tb_kblocks_rgb_core;
         dut.state=1; dut.piece_kind=3'd1; dut.piece_rot=0;
         dut.piece_x=5'd8; dut.piece_y=5'd18;
         dut.fall_ctr=8'd29;
-        frame();expect_state(2);
+        lock_frame();expect_state(2);
         repeat(70) @(negedge clk);
         expect_state(3);
         send("p");frame();expect_state(1);
