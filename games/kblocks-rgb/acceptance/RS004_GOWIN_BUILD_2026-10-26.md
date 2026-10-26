@@ -12,9 +12,30 @@
 - Local build directory: `games/kblocks-rgb/build/20261026_125847/work`.
 - Candidate: `impl/pnr/konsol_kblocks_rgb_nano9k.fs`.
 - Candidate SHA-256 (reported by operator): `F842B196CB4A56E0C18DEF1C471CBDDC82F59F0B552A27F553FDFF9692BBDC4E`.
-- Bitstream size: **not yet reported**.
+- Bitstream size: **2,070,601 bytes**, reported by the read-only SHA-256 inspection script.
 - Git identity of the exact KonSol source snapshot: **not independently recorded in the build output**. A later branch HEAD must not be retroactively treated as the build identity.
 - The operator reported successful completion of Gowin `run all` with a generated `.fs`, so the **build/generation step completed**. This is not by itself evidence of positive timing margins.
+
+## PnR resource report (operator excerpt, same candidate directory)
+
+The read-only inspector verified the candidate SHA-256 against the expected hash and found the report files in the same `impl/pnr` directory.
+
+| Resource | PnR report excerpt | Comment |
+| --- | --- | --- |
+| Logic | **3561 / 8640 = 42%** (report rounding) | Fits within device logic budget |
+| LUT | 3333 | Subtotal: LUT/ALU/ROM16 = 3465 |
+| ALU | 132 | No ROM16 |
+| SSRAM (RAM16) | 16 | Internal distributed RAM resource; no external RAM required |
+| Registers | **695 / 6693 = 11%** | Includes 694 logic FF |
+| Logic FF | **694 / 6480 = 11%** | No inferred latches (`0/6480`) |
+| IOLOGIC | 7% | Report excerpt |
+| BSRAM | 0% | Not used |
+| DSP | 0% | Not used |
+| PLL | **1 / 2 = 50%** | One PLL used |
+
+PnR report inventory: `.rpt.txt` (21,200 bytes), `.rpt.html` (29,842 bytes), `_tr_content.html` (502,100 bytes), `.log` (1,818 bytes), `.tr.html` (385 bytes). The operator's report collector generated `RS004_STA_READABLE.txt` and local `RS004_STA_EVIDENCE_20261026_133243.zip`. **These files are local to the operator PC, not yet attached or reviewed here.**
+
+**Resource fit conclusion:** the device resource budget appears sufficient based on the operator's PnR report, but these excerpts do not establish setup/hold/recovery/removal margin or timing constraint coverage.
 
 ## Independent earlier acceptance
 
@@ -23,7 +44,7 @@
 
 ## Pending — must NOT be marked PASS from this log
 
-1. Examine `impl/pnr/konsol_kblocks_rgb_nano9k.rpt.txt` for Logic/LUT/FF/BSRAM/PLL utilization and PnR warnings.
+1. Resource utilization has now been extracted (above); the full PnR warnings and fit report still require inspection.
 2. Examine `impl/pnr/konsol_kblocks_rgb_nano9k_tr_content.html` (or equivalent `.tr`) for all clock domains (input 27 MHz, derived pixel 25.2 MHz and serializer 126 MHz), setup/hold violations, recovery/removal, exceptions, unconstrained paths, generated clocks and minimum pulse widths when available. The published SDC only declares the 27 MHz input clock; **review whether generated clocks are recognized automatically**.
 3. Rehash the exact candidate before later SRAM programming and preserve the PnR/STA report alongside the SHA.
 4. Board tests (HDMI, keyboard + cleared row, top-out/restart) **NOT RUN**.
