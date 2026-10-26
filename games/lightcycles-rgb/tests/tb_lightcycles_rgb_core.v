@@ -95,6 +95,7 @@ module tb_lightcycles_rgb_core;
     // Collision with existing trail: B wins, score increments once.
     @(negedge clk); dut.trail_a[8][8]=1'b1;
     step();
+    $display("RS005_TRACE_A_TRAIL state=%d ax=%d ay=%d dir=%d count=%d",dut.state,dut.ax,dut.ay,dut.adir,dut.frame_count);
     state_is(2);
     if(dut.winner!==2 || dut.wins_b!==1 || dut.wins_a!==0)
       $fatal(1,"A trail collision / score fail");
@@ -115,6 +116,7 @@ module tb_lightcycles_rgb_core;
     dut.bx=12;dut.by=10;dut.bdir=3;
     dut.frame_count=0;
     step();
+    $display("RS005_TRACE_HEAD_ON state=%d ax=%d ay=%d bx=%d by=%d count=%d",dut.state,dut.ax,dut.ay,dut.bx,dut.by,dut.frame_count);
     state_is(2);
     if(dut.winner!==0 || dut.wins_b!==1)
       $fatal(1,"head-on draw or score incorrect");
@@ -143,6 +145,7 @@ module tb_lightcycles_rgb_core;
     dut.bx=24;dut.by=13;dut.bdir=3;
     dut.frame_count=0;
     step();
+    $display("RS005_TRACE_WALL state=%d ax=%d ay=%d count=%d",dut.state,dut.ax,dut.ay,dut.frame_count);
     state_is(2);
     if(dut.winner!==2 || dut.wins_b!==1)
       $fatal(1,"boundary or win accounting");
