@@ -1,0 +1,3 @@
+# FPGA local bench evidence, never publish unreviewed personal machine logs.
+acceptance-local/
+*.tmp
