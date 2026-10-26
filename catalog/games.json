@@ -1,0 +1,108 @@
+{
+  "schema_version": "0.1",
+  "reviewed_on": "2026-10-26",
+  "games": [
+    {
+      "id": "pikosol-pong-rgb-v1-2",
+      "name": "PiKoSoL PONG RGB v1.2",
+      "hardware_class": "FPGA",
+      "board_ids": [
+        "tang-nano-9k"
+      ],
+      "implementation": "independent Verilog HDMI game, no PicoRV32 CPU",
+      "evidence_level": "operator_board_pass",
+      "source_url": "https://github.com/AIDevelopersMonster/Sipeed-FPGA/tree/main/games/pong-rgb",
+      "play_url": "https://aidevelopersmonster.github.io/Sipeed-FPGA/pong-rgb/",
+      "distribution": {
+        "status": "released",
+        "type": "gowin_fs",
+        "file": "pikosol_pong_rgb_nano9k.fs",
+        "size_bytes": 2070601,
+        "sha256": "978d9bcff7c1ef1350f88af2c603a00b7d3bb6325ea39019ca57cf5091639f96",
+        "release_url": "https://github.com/AIDevelopersMonster/Sipeed-FPGA/releases/tag/pikosol-pong-rgb-v1.2",
+        "download_url": "https://github.com/AIDevelopersMonster/Sipeed-FPGA/releases/download/pikosol-pong-rgb-v1.2/pikosol_pong_rgb_nano9k.fs"
+      },
+      "license_note": "Original MIT; SVO ISC; Gowin vendor terms. No game ROM copied.",
+      "notes": "Operator-reported physical game on Tang Nano 9K, 2026-10-26; exact-SHA post-route STA report not archived. SRAM-only."
+    },
+    {
+      "id": "arduino-uno-breakout-touch",
+      "name": "Arkanoid / Breakout Touch for Arduino UNO",
+      "hardware_class": "MCU",
+      "board_ids": [
+        "arduino-uno-mar2406"
+      ],
+      "implementation": "ILI9341 touch-controlled breakout",
+      "evidence_level": "source_documented",
+      "source_url": "https://github.com/AIDevelopersMonster/Arduino-UNO-Shields/tree/main/shields/MAR2406-2.4-TFT/examples/Arkanoid_Breakout_Touch",
+      "distribution": {
+        "status": "source_only"
+      },
+      "license_note": "Original repository has no top-level LICENSE observed; review before redistributing code.",
+      "notes": "Target hardware documented and checklist available. No separate Breakout-specific board acceptance record established in this audit."
+    },
+    {
+      "id": "arduino-uno-tictactoe-lab03",
+      "name": "Tic-Tac-Toe with SD History (LAB-03 TEST-08)",
+      "hardware_class": "MCU",
+      "board_ids": [
+        "arduino-uno-mar2406"
+      ],
+      "implementation": "TFT touch game with saved move history on microSD",
+      "evidence_level": "build_pass",
+      "source_url": "https://github.com/AIDevelopersMonster/Arduino-UNO-Shields/tree/main/labs/03-UNO-MAR2406-TFT",
+      "distribution": {
+        "status": "source_only"
+      },
+      "license_note": "Original repository lacks a top-level LICENSE in the audited tree; review before redistribution.",
+      "notes": "LAB-03 complete; TEST-08 final demonstrator reports AVR build PASS. Do not equate to standalone board PASS for every game."
+    },
+    {
+      "id": "snake-game-arduino",
+      "name": "Snake_Game Arduino variants",
+      "hardware_class": "MCU",
+      "board_ids": [],
+      "implementation": "Several Arduino UNO and Nano game sketches with displays",
+      "evidence_level": "source_documented",
+      "source_url": "https://github.com/AIDevelopersMonster/Snake_Game",
+      "distribution": {
+        "status": "collection"
+      },
+      "license_note": "No top-level LICENSE observed; provenance and wiring differ by variant.",
+      "notes": "UNO and Nano variants; specific boards and per-variant physical acceptance not normalized in v0.1."
+    },
+    {
+      "id": "flappy-bird-esp8266",
+      "name": "Flappy Bird for ESP8266",
+      "hardware_class": "MCU",
+      "board_ids": [
+        "esp8266-ssd1306"
+      ],
+      "implementation": "SSD1306 128x64 game, button and active buzzer",
+      "evidence_level": "source_documented",
+      "source_url": "https://github.com/AIDevelopersMonster/Flappy-Bird-on-ESP8266",
+      "video_url": "https://youtu.be/M-zgmhmOkPY",
+      "distribution": {
+        "status": "source_only"
+      },
+      "license_note": "GPL-3.0 at source repository; respect copyleft and any third-party resource rights.",
+      "notes": "Repository includes implementation, instructions and linked demonstration; no independent RetroStation board test."
+    },
+    {
+      "id": "arduino-lcd-keypad-games",
+      "name": "Arduino LCD Keypad Shield game collection",
+      "hardware_class": "MCU",
+      "board_ids": [
+        "arduino-lcd-keypad"
+      ],
+      "implementation": "17 collected/adapted sketches, each with historical attribution",
+      "evidence_level": "source_documented",
+      "source_url": "https://github.com/AIDevelopersMonster/arduino-lcd-keypad-shield-games",
+      "distribution": {
+        "status": "collection"
+      },
+      "license_note": "Multiple upstream authors and original project terms; do not relicense or mirror without per-game review.",
+      "notes": "Historical game videos and source links are provided; do not claim universal hardware PASS."
+    }
+  ]
+}

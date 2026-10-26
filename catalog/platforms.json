@@ -1,0 +1,71 @@
+{
+  "schema_version": "0.1",
+  "reviewed_on": "2026-10-26",
+  "boards": [
+    {
+      "id": "tang-nano-9k",
+      "hardware_class": "FPGA",
+      "name": "Sipeed Tang Nano 9K",
+      "device": "Gowin GW1NR-9C",
+      "display": [
+        "HDMI"
+      ],
+      "control": [
+        "FT2232 UART channel B / 115200 8N1"
+      ],
+      "programming": "PiKoSoL WebUSB FT2232 JTAG channel A, volatile SRAM only",
+      "status": "supported_pong_operator_evidence",
+      "loader_url": "https://aidevelopersmonster.github.io/Sipeed-FPGA/lab04/web-loader/",
+      "source_url": "https://github.com/AIDevelopersMonster/Sipeed-FPGA",
+      "notes": "No claimed automatic board identification; never target another FPGA with this .fs"
+    },
+    {
+      "id": "arduino-uno-mar2406",
+      "hardware_class": "MCU",
+      "name": "Arduino UNO + MAR2406 2.4-inch TFT touch shield",
+      "device": "ATmega328P",
+      "display": [
+        "ILI9341 320x240 ROT1"
+      ],
+      "control": [
+        "resistive touch"
+      ],
+      "programming": "Arduino AVR build/upload, not FPGA WebUSB",
+      "status": "lab03_complete",
+      "source_url": "https://github.com/AIDevelopersMonster/Arduino-UNO-Shields/tree/main/labs/03-UNO-MAR2406-TFT",
+      "notes": "Touch calibration is sample/batch-specific"
+    },
+    {
+      "id": "esp8266-ssd1306",
+      "hardware_class": "MCU",
+      "name": "ESP8266 + SSD1306 OLED",
+      "device": "ESP8266",
+      "display": [
+        "SSD1306 128x64 via I2C"
+      ],
+      "control": [
+        "button"
+      ],
+      "programming": "ESP8266 Arduino core or equivalent",
+      "status": "source_documented",
+      "source_url": "https://github.com/AIDevelopersMonster/Flappy-Bird-on-ESP8266",
+      "notes": "Source has GPL-3.0 license; board instance not independently audited here"
+    },
+    {
+      "id": "arduino-lcd-keypad",
+      "hardware_class": "MCU",
+      "name": "Arduino + LCD Keypad Shield",
+      "device": "Arduino AVR board (per sketch)",
+      "display": [
+        "LCD Keypad Shield"
+      ],
+      "control": [
+        "keypad shield buttons"
+      ],
+      "programming": "Arduino sketch, per original implementation",
+      "status": "historical_collection",
+      "source_url": "https://github.com/AIDevelopersMonster/arduino-lcd-keypad-shield-games",
+      "notes": "Third-party sketches have separate attribution/license requirements; board details vary by sketch"
+    }
+  ]
+}
