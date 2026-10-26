@@ -59,37 +59,48 @@ module lightcycles_rgb_core #(
             endcase
         end
     endfunction
-    function can_advance;
-        input [4:0] x,y;
-        input [1:0] direction;
-        reg wall;
-        reg [4:0] nx,ny;
-        begin
-            wall = (direction==NORTH && y==0) ||
-                   (direction==SOUTH && y==YMAX) ||
-                   (direction==WEST && x==0) ||
-                   (direction==EAST && x==XMAX);
-            nx=forward_x(x,direction);
-            ny=forward_y(y,direction);
-            // Explicit wall gate protects against horizontal wrap x=0 -> 31.
-            if(wall || ny>=5'd24)
-                can_advance=1'b0;
-            else
-                can_advance=!(trail_a[ny][nx] || trail_b[ny][nx]);
+    // Gowin resource fix: use one dynamic trail read per player for
+    // all three forward/left/right AI lookahead probes. The earlier three
+    // parallel calls inferred six large independent asynchronous muxes.
+    // One sweep completes in THREE pixel clocks, far faster than a game step.
+    reg [1:0] ai_probe_phase;
+    reg ai_forward_safe,ai_left_safe,ai_right_safe;
+    wire [1:0] ai_probe_dir=(ai_probe_phase==0)?bdir:
+                (ai_probe_phase==1)?(bdir-2'd1):(bdir+2'd1);
+    wire [4:0] ai_probe_x=forward_x(bx,ai_probe_dir);
+    wire [4:0] ai_probe_y=forward_y(by,ai_probe_dir);
+    wire ai_probe_wall=(ai_probe_dir==NORTH && by==0) ||
+                       (ai_probe_dir==SOUTH && by==YMAX) ||
+                       (ai_probe_dir==WEST && bx==0) ||
+                       (ai_probe_dir==EAST && bx==XMAX);
+    wire ai_probe_busy=trail_a[ai_probe_y][ai_probe_x] ||
+                       trail_b[ai_probe_y][ai_probe_x];
+    wire ai_probe_safe=!ai_probe_wall && ai_probe_y<5'd24 &&
+                       !ai_probe_busy;
+    always @(posedge clk or negedge reset_n) begin
+        if(!reset_n) begin
+            ai_probe_phase<=0;
+            ai_forward_safe<=0;ai_left_safe<=0;ai_right_safe<=0;
+        end else begin
+            if(ai_probe_phase==0) begin
+                ai_forward_safe<=ai_probe_safe; ai_probe_phase<=1;
+            end else if(ai_probe_phase==1) begin
+                ai_left_safe<=ai_probe_safe; ai_probe_phase<=2;
+            end else begin
+                ai_right_safe<=ai_probe_safe; ai_probe_phase<=0;
+            end
         end
-    endfunction
-
+    end
     // Atomic direction selection on each game step; reverse moves ignored.
     wire [1:0] a_effective=(turn_a_valid && turn_a!=(adir ^ 2'd2)) ? turn_a : adir;
     reg [1:0] b_effective;
     always @* begin
         b_effective=bdir;
         if (ai_enabled) begin
-            // Greedy safety only; not pathfinding or an unbeatable AI.
-            if (!can_advance(bx,by,bdir)) begin
-                if (can_advance(bx,by,bdir-2'd1))
+            if (!ai_forward_safe) begin
+                if (ai_left_safe)
                     b_effective=bdir-2'd1;
-                else if (can_advance(bx,by,bdir+2'd1))
+                else if (ai_right_safe)
                     b_effective=bdir+2'd1;
             end
         end else if (turn_b_valid && turn_b!=(bdir ^ 2'd2))
