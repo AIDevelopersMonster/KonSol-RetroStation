@@ -1,0 +1,129 @@
+name: Publish KonSol RetroStation FPGA Game Console
+
+# Builds a same-origin WebUSB/Web Serial site. Firmware is *downloaded* from
+# pinned official GitHub Releases and SHA-256 checked, never synthesized here.
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'docs/console/**'
+      - 'docs/index.html'
+      - 'catalog/games.json'
+      - '.github/workflows/publish-retrostation-console.yml'
+      - 'tools/build_console_site.py'
+      - 'tools/test_console.py'
+  release:
+    types: [published]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: konsol-retrostation-console-pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    if: github.event_name != 'release' || github.event.release.tag_name == 'konsol-kblocks-rgb-v0.1.0'
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout release-independent main
+        uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Verify static site contracts
+        shell: bash
+        run: |
+          set -euo pipefail
+          node --check docs/console/app.js
+          python3 tools/test_console.py
+      - name: Prepare GitHub Pages site
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p _site/console/vendor _site/console/firmware _site/data
+          cp -a docs/console/. _site/console/
+          cp docs/index.html _site/index.html
+          cp catalog/games.json _site/data/games.json
+          touch _site/.nojekyll
+      - name: Install exact proven WebUSB/WASM runtime and isolation service worker
+        shell: bash
+        env:
+          OFL_VERSION: '1.1.1-182.269'
+          SIPEED_PIN: 'acf73c018d3bc614c4845742a135f9e8e4b57baa'
+        run: |
+          set -euo pipefail
+          tmp="$(mktemp -d)"
+          npm_pack="$(npm pack "@yowasp/openfpgaloader@${OFL_VERSION}" --pack-destination "$tmp" --silent)"
+          tar -xzf "$tmp/$npm_pack" -C "$tmp"
+          src="$tmp/package/gen"
+          test -s "$src/bundle.js"
+          test -s "$src/openFPGALoader.wasm"
+          test "$(sha256sum "$src/bundle.js" | cut -d' ' -f1)" = 'b8e5ee8163f15b3165ad6a61950bfb3554e6a88d04dcca6aa12bde85dd6f72f1'
+          test "$(sha256sum "$src/openFPGALoader.wasm" | cut -d' ' -f1)" = '9d7bdbbd3122dd61c5779a91828dcdf52709f00f771d7db7cfbf05940a24d62e'
+          cp -a "$src/." _site/console/vendor/
+          curl -fLSs "https://raw.githubusercontent.com/AIDevelopersMonster/Sipeed-FPGA/$SIPEED_PIN/docs/lab04/web-loader/coi-serviceworker.js" \
+            -o _site/console/coi-serviceworker.js
+          test "$(git hash-object _site/console/coi-serviceworker.js)" = '9901474cc3175733262abb208b1f9e39e1c99595'
+          node --check _site/console/vendor/bundle.js
+          node --check _site/console/coi-serviceworker.js
+          echo 'CONSOLE_PINNED_WEBUSB_RUNTIME_PASS'
+      - name: Download verified PONG + BREAKOUT game releases
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          dest='_site/console/firmware'
+          gh release download pikosol-pong-rgb-v1.2 --repo AIDevelopersMonster/Sipeed-FPGA \
+            --pattern pikosol_pong_rgb_nano9k.fs --dir "$dest" --clobber
+          gh release download konsol-breakout-rgb-v0.1.0 --repo AIDevelopersMonster/Sipeed-FPGA \
+            --pattern pikosol_breakout_rgb_nano9k.fs --dir "$dest" --clobber
+      - name: Add K-BLOCKS image only if its pinned release is already published
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          repo='AIDevelopersMonster/KonSol-RetroStation'
+          tag='konsol-kblocks-rgb-v0.1.0'
+          if gh release view "$tag" --repo "$repo" >/dev/null 2>&1; then
+            gh release download "$tag" --repo "$repo" \
+              --pattern konsol_kblocks_rgb_nano9k.fs --dir _site/console/firmware --clobber
+          else
+            echo 'CONSOLE_KBLOCKS_LOCAL_ONLY: release not yet published; exact local .fs remains usable.'
+          fi
+      - name: Bind all staged .fs assets to exact pinned hashes and sizes
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 tools/build_console_site.py --site _site --require-baseline
+          find _site/console/firmware -maxdepth 1 -type f -printf '%f %s bytes\n'
+      - name: Configure Pages
+        uses: actions/configure-pages@v5
+      - name: Upload verified game console
+        uses: actions/upload-pages-artifact@v4
+        with:
+          path: _site
+  deploy:
+    if: github.event_name != 'release' || github.event.release.tag_name == 'konsol-kblocks-rgb-v0.1.0'
+    runs-on: ubuntu-latest
+    needs: build
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
