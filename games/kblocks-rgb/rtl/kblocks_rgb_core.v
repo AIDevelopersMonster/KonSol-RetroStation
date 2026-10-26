@@ -367,7 +367,7 @@ module kblocks_rgb_core #(
                      px>=10'd175 && px<10'd465 && py>=10'd405 && py<10'd426;
     wire ready_banner=state==ST_READY && blink[4] &&
                      px>=10'd239 && px<10'd401 && py>=10'd405 && py<10'd426;
-    wire edge=px<10'd3 || px>=10'd637 || py<10'd3 || py>=10'd477;
+    wire screen_edge=px<10'd3 || px>=10'd637 || py<10'd3 || py>=10'd477;
     wire [23:0] background=palette==0 ? 24'h10152A :
                            palette==1 ? 24'h09151B :
                            palette==2 ? 24'h25121C : 24'h171021;
@@ -384,6 +384,6 @@ module kblocks_rgb_core #(
           ready_banner ? 24'h73EAC8 :
           title_k ? 24'hFCDE72 :
           (grid_line || preview_grid) ? 24'h253354 :
-          edge ? 24'h405070 : background;
+          screen_edge ? 24'h405070 : background;
     wire _unused = ^s_axis_tdata;
 endmodule
