@@ -1,6 +1,6 @@
 # KonSol RetroStation — RS-005 LIGHT CYCLES RGB v0.1.0
 
-**STATUS: SOURCE CANDIDATE — SIM / FIT / STA / BOARD NOT YET ACCEPTED.**
+**STATUS: RTL SIM PASS (78 checks; GitHub Actions + Windows PowerShell operator). GOWIN FIT/STA NOT RUN. BOARD NOT RUN. NOT RELEASED.**
 
 A two-player original neon-trail arena game for Sipeed Tang Nano 9K (GW1NR-9C), 640×480 HDMI, native Verilog (no CPU, SD, external RAM or framebuffer). Uses the same Sipeed-FPGA sibling dependency as RS-004 K-BLOCKS for the proven display, clocks, serializer and UART transport.
 
@@ -25,7 +25,7 @@ git pull --ff-only
 .\games\lightcycles-rgb\test.ps1
 ```
 
-**PASS marker only if actually observed:** `RS005_LIGHTCYCLES_TB_PASS`. CI runs the same tests. No `SIM PASS` is claimed until the workflow runs.
+**SIM PASS (26 Oct 2026):** GitHub Actions [run 40322493712](https://github.com/AIDevelopersMonster/KonSol-RetroStation/actions/runs/40322493712) completed successfully at source commit `be9c927c1e85a6443f73fd32ca1a85514a92f793`: `RS005_LIGHTCYCLES_TB_PASS checks=78`. The operator independently reported the same 78-check PASS on Windows PowerShell, with `RS005_TB_EXIT_0`. An attempted `git switch -c` reported the branch already existed; actual local branch/commit were not printed, so local source identity is pending confirmation. [Simulation receipt](acceptance/RS005_SIM_2026-10-26.md).
 
 ## Gowin (only after SIM PASS)
 
