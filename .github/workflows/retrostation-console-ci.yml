@@ -1,0 +1,26 @@
+name: KonSol RetroStation console checks
+on:
+  pull_request:
+    paths:
+      - 'docs/console/**'
+      - 'docs/index.html'
+      - 'tools/build_console_site.py'
+      - 'tools/test_console.py'
+      - '.github/workflows/retrostation-console-*.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  static-test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Verify browser code, profiles, manifest and safety gates
+        run: |
+          set -euo pipefail
+          node --check docs/console/app.js
+          python3 tools/test_console.py

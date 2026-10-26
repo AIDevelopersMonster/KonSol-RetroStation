@@ -1,0 +1,59 @@
+{
+  "schema_version": 1,
+  "board": "Sipeed Tang Nano 9K",
+  "device": "GW1NR-9C",
+  "programmer": "WebUSB FT2232 JTAG A; volatile SRAM only",
+  "profiles": [
+    {
+      "id": "pong",
+      "name": "PiKoSoL PONG RGB",
+      "version": "v1.2",
+      "subtitle": "Два игрока, AI и HDMI",
+      "description": "Оригинальный аппаратный Pong: партия до 9 очков, две ракетки или компьютерный соперник, четыре цветовые схемы.",
+      "color": "#59d9f3",
+      "mode": "PONG",
+      "filename": "pikosol_pong_rgb_nano9k.fs",
+      "size_bytes": 2070601,
+      "sha256": "978d9bcff7c1ef1350f88af2c603a00b7d3bb6325ea39019ca57cf5091639f96",
+      "release_repo": "AIDevelopersMonster/Sipeed-FPGA",
+      "release_tag": "pikosol-pong-rgb-v1.2",
+      "release_url": "https://github.com/AIDevelopersMonster/Sipeed-FPGA/releases/tag/pikosol-pong-rgb-v1.2",
+      "source_url": "https://github.com/AIDevelopersMonster/Sipeed-FPGA/tree/main/games/pong-rgb",
+      "controller_notes": "W/S — левая ракетка; I/K — правая; A — AI; 5/6/7 — сложность; 1–4 — цвета; R — рестарт."
+    },
+    {
+      "id": "breakout",
+      "name": "BREAKOUT RGB",
+      "version": "v0.1.0",
+      "subtitle": "32 кирпича и три жизни",
+      "description": "Самостоятельная аркада с мячом, ракеткой, отскоками и 32 разрушаемыми блоками. Оператор прошёл игру до победы.",
+      "color": "#fcb96a",
+      "mode": "BREAKOUT",
+      "filename": "pikosol_breakout_rgb_nano9k.fs",
+      "size_bytes": 2070601,
+      "sha256": "4cf80dbd008b0d41d4316bf63db952190c03940a4ffb1ffc00cab09210ae8789",
+      "release_repo": "AIDevelopersMonster/Sipeed-FPGA",
+      "release_tag": "konsol-breakout-rgb-v0.1.0",
+      "release_url": "https://github.com/AIDevelopersMonster/Sipeed-FPGA/releases/tag/konsol-breakout-rgb-v0.1.0",
+      "source_url": "https://github.com/AIDevelopersMonster/Sipeed-FPGA/tree/main/games/breakout-rgb",
+      "controller_notes": "←/→ или A/D — ракетка; P — запуск мяча; R — рестарт; 1–4 — палитра."
+    },
+    {
+      "id": "kblocks",
+      "name": "K-BLOCKS RGB",
+      "version": "v0.1.0",
+      "subtitle": "10×20, семь фигур, HDMI",
+      "description": "Оригинальная игра с падающими блоками: вращение, ускоренное падение, очистка линий, счётчик и NEXT. Подтверждена оператором на Tang Nano 9K.",
+      "color": "#8cebb8",
+      "mode": "K-BLOCKS",
+      "filename": "konsol_kblocks_rgb_nano9k.fs",
+      "size_bytes": 2070601,
+      "sha256": "f842b196cb4a56e0c18def1c471cbddc82f59f0b552a27f553fdff9692bbdc4e",
+      "release_repo": "AIDevelopersMonster/KonSol-RetroStation",
+      "release_tag": "konsol-kblocks-rgb-v0.1.0",
+      "release_url": "https://github.com/AIDevelopersMonster/KonSol-RetroStation/releases/tag/konsol-kblocks-rgb-v0.1.0",
+      "source_url": "https://github.com/AIDevelopersMonster/KonSol-RetroStation/tree/main/games/kblocks-rgb",
+      "controller_notes": "←/→ — движение; ↑ — поворот; ↓ — ускорение; P — новая игра; R — сброс; 1–4 — цвета."
+    }
+  ]
+}

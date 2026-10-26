@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0b1523">
+  <meta name="description" content="KonSol RetroStation — браузерная игровая консоль и SRAM WebUSB-программатор для Sipeed Tang Nano 9K. Pong, Breakout, K-Blocks.">
+  <title>KonSol RetroStation · FPGA GAME CONSOLE</title>
+  <link rel="stylesheet" href="./style.css">
+  <!-- MIT-licensed coi-serviceworker is downloaded from a pinned version of our existing PiKoSoL loader at Pages build time. -->
+  <script src="./coi-serviceworker.js"></script>
+  <script type="module" src="./app.js"></script>
+</head>
+<body>
+  <div class="top-glow"></div>
+  <div class="shell">
+    <header class="topbar">
+      <a class="identity" href="../"><span class="mark">K<span>:</span></span><span>KonSol <b>RetroStation</b><small>FPGA GAME CONSOLE · Tang Nano 9K</small></span></a>
+      <nav aria-label="Проект">
+        <a href="https://github.com/AIDevelopersMonster/KonSol-RetroStation" target="_blank" rel="noopener noreferrer">Исходники ↗</a>
+        <a href="https://github.com/AIDevelopersMonster/KonSol-RetroStation/blob/main/docs/ARCHITECTURE.md" target="_blank" rel="noopener noreferrer">Архитектура ↗</a>
+      </nav>
+    </header>
+
+    <main>
+      <section class="hero">
+        <div>
+          <p class="eyebrow">WEBUSB / FPGA RETRO GAMING</p>
+          <h1>Три игры.<br><span>Одна FPGA.</span></h1>
+          <p class="lead">Выберите игру, загрузите проверенный битстрим из GitHub или с ПК, запрограммируйте <strong>только SRAM</strong> и управляйте игрой с клавиатуры через Web Serial. Реальная игровая графика выводится на HDMI.</p>
+          <div class="capabilities"><span>GW1NR-9C</span><span>HDMI 640×480</span><span>FT2232 USB</span><span class="safe">SRAM ONLY</span></div>
+        </div>
+        <div class="console-graphic" aria-label="Схема аппаратной консоли" role="img">
+          <div class="console-screen"><div class="screen-top"><span>RETROSTATION</span><span class="live-dot"></span></div><div class="screen-middle"><div class="ornament a"></div><div class="ornament b"></div><div class="ornament c"></div><div class="screen-copy">FPGA<span>GAME</span><small>HDMI OUTPUT · EXTERNAL DISPLAY</small></div></div><div class="screen-foot">GOWIN GW1NR-9C · 9K</div></div>
+          <div class="console-front"><span>◀</span><span>●</span><span>▶</span><small>WEBUSB / JTAG A</small></div>
+        </div>
+      </section>
+
+      <div class="environment" role="group" aria-label="Проверка браузера">
+        <div><span>БРАУЗЕР WEBUSB</span><strong id="usb-status">Проверка…</strong></div>
+        <div><span>WASM / COOP–COEP</span><strong id="isolation-status">Проверка…</strong></div>
+        <div><span>JTAG FT2232 A</span><strong id="jtag-status">Не подключён</strong></div>
+        <div><span>UART FT2232 B</span><strong id="serial-status">Не подключён</strong></div>
+      </div>
+
+      <section class="library" aria-labelledby="library-title">
+        <div class="section-head"><div><p class="eyebrow">01 / GAME LIBRARY</p><h2 id="library-title">Выберите игровую прошивку</h2></div><p>Все профили закреплены за Tang Nano 9K и контрольной суммой SHA-256.</p></div>
+        <div class="game-grid" id="game-grid" role="radiogroup" aria-label="Выбор игры">
+          <div class="loading">Загрузка проверенного каталога игр…</div>
+        </div>
+      </section>
+
+      <div class="columns">
+        <section class="panel" aria-labelledby="firmware-title">
+          <p class="eyebrow">02 / VERIFIED BITSTREAM</p>
+          <h2 id="firmware-title">Подготовьте прошивку</h2>
+          <div class="selected"><div><small>ВЫБРАНО</small><strong id="selected-game">—</strong><span id="selected-file">Нет файла .fs</span></div><div id="remote-status" class="status-pill">Проверка GitHub…</div></div>
+          <p class="help" id="game-description">Выберите одну из игр.</p>
+          <div class="actions">
+            <button id="download-button" class="button primary" type="button" disabled>↓ Получить .fs с GitHub</button>
+            <button id="local-button" class="button outline" type="button" disabled>↑ Выбрать локальный .fs</button>
+            <input type="file" id="local-file" accept=".fs" hidden>
+          </div>
+          <p class="help">Если K-BLOCKS ещё не опубликован как GitHub Release, доступен <b>локальный</b> файл той же проверенной сборки. Файл с другим SHA-256 будет отвергнут.</p>
+          <div class="checksum"><span>ЭТАЛОН SHA-256</span><code id="expected-sha">—</code></div>
+          <div class="checksum"><span>ФАКТИЧЕСКИЙ SHA-256</span><code id="actual-sha">Файл не выбран</code></div>
+          <div class="result neutral" id="verification-status" role="status">Для программирования необходим точный SHA-256 PASS.</div>
+          <div class="minor-links"><a id="release-link" target="_blank" rel="noopener noreferrer">Релиз ↗</a><a id="source-link" target="_blank" rel="noopener noreferrer">Исходники ↗</a></div>
+        </section>
+
+        <section class="panel" aria-labelledby="program-title">
+          <p class="eyebrow">03 / PROGRAM FPGA SRAM</p>
+          <h2 id="program-title">Подключите Tang Nano 9K</h2>
+          <p class="help">Chrome или Edge → <b>JTAG Debugger</b> (FT2232 A, 0403:6010). В Windows интерфейс A должен использовать WinUSB, интерфейс B остаётся COM-портом для UART. Не отключайте USB при записи.</p>
+          <button id="connect-jtag" class="button outline wide" type="button">⌁ Выбрать USB JTAG</button>
+          <p id="device-description" class="device-info">Устройство ещё не выбрано.</p>
+          <div class="command"><span>ВЫПОЛНЯЕМАЯ КОМАНДА</span><code>openFPGALoader -c ft2232 -b tangnano9k game.fs</code><small>Нет опции Flash, стирания или постоянной записи.</small></div>
+          <button id="program-button" class="button program wide" type="button" disabled>▶ Загрузить в SRAM</button>
+          <div class="result neutral" id="program-status" role="status">Ожидается проверенная прошивка и разрешение на JTAG.</div>
+        </section>
+      </div>
+
+      <section class="panel controller" aria-labelledby="controls-title">
+        <div class="section-head"><div><p class="eyebrow">04 / LIVE GAMEPAD</p><h2 id="controls-title">Управление игрой через UART</h2></div><div class="serial-buttons"><button id="connect-serial" class="button primary" type="button">⌨ Подключить Web Serial</button><button id="disconnect-serial" class="button outline" type="button" disabled>Отключить</button></div></div>
+        <p class="help">Выберите FT2232 <b>USB Serial Port (интерфейс B)</b>, 115200 8N1. После подключения нажмите на поле управления — события клавиатуры пойдут в FPGA, а не в эмулятор.</p>
+        <div id="gamepad" class="gamepad" tabindex="0" role="group" aria-label="Игровая клавиатура" aria-describedby="controls-description">
+          <div class="gamepad-keys"><span class="keycap">←</span><span class="keycap">↑</span><span class="keycap">↓</span><span class="keycap">→</span><span class="keycap small-key">P</span><span class="keycap small-key">R</span><span class="gamepad-tip">Нажмите здесь и используйте клавиатуру</span></div>
+          <p id="controls-description">Для каждой игры назначение клавиш своё.</p>
+        </div>
+        <div class="quick"><button class="button outline quick-cmd" data-command="p" type="button" disabled>▶ Старт</button><button class="button outline quick-cmd" data-command="r" type="button" disabled>↻ Рестарт</button><button class="button outline quick-cmd" data-command="1" type="button" disabled>Цвет 1</button><button class="button outline quick-cmd" data-command="2" type="button" disabled>Цвет 2</button><button class="button outline quick-cmd" data-command="3" type="button" disabled>Цвет 3</button><button class="button outline quick-cmd" data-command="4" type="button" disabled>Цвет 4</button></div>
+        <p class="help">В PONG кнопка «Старт» не требуется. Для BREAKOUT и K-BLOCKS клавиша P запускает игру. Потеря фокуса отправляет <code>x</code>, освобождая зажатые клавиши.</p>
+      </section>
+
+      <section class="panel event-log"><div class="log-head"><div><p class="eyebrow">05 / DIAGNOSTICS</p><h2>Журнал программатора</h2></div><div class="log-actions"><button id="clear-log" class="button text-button" type="button">Очистить</button><button id="download-log" class="button text-button" type="button">Сохранить .txt</button></div></div><pre id="log" role="log" aria-live="off">KonSol RetroStation · WebUSB JTAG + Web Serial
+Готовность браузера проверяется…
+</pre></section>
+
+      <section class="howto"><div><b>01. Проверить файл</b><p>SHA-256 должен совпадать с опубликованным значением для выбранной игры и платы.</p></div><div><b>02. Загрузить SRAM</b><p>JTAG A выполняет конфигурирование FPGA. При снятии питания прошивка теряется.</p></div><div><b>03. Играть на HDMI</b><p>FT2232 B принимает команды клавиатуры по UART. Вывод изображения — на физический HDMI-монитор.</p></div></section>
+    </main>
+    <footer><span>KonSol RetroStation · 26 October 2026 · Tang Nano 9K</span><span>YoWASP openFPGALoader (ISC) · coi-serviceworker (MIT) · исходники и история проверок в GitHub</span></footer>
+  </div>
+</body>
+</html>
