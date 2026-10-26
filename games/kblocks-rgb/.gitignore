@@ -1,0 +1,7 @@
+# K-BLOCKS local simulations, Gowin implementation files and bitstreams
+build/
+*.fs
+*.log
+*.vcd
+*.out
+*.tmp
