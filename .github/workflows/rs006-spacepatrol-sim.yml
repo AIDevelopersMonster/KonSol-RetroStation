@@ -24,9 +24,9 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          mkdir -p /tmp/rs005
-          iverilog -g2012 -Wall -s tb_spacepatrol_rgb_core -o /tmp/rs005/sim \
+          mkdir -p /tmp/rs006
+          iverilog -g2012 -Wall -s tb_spacepatrol_rgb_core -o /tmp/rs006/sim \
             games/spacepatrol-rgb/rtl/spacepatrol_rgb_core.v \
             games/spacepatrol-rgb/tests/tb_spacepatrol_rgb_core.v
-          vvp /tmp/rs005/sim | tee /tmp/rs005/result.log
-          grep -q 'RS006_SPACEPATROL_TB_PASS' /tmp/rs005/result.log
+          vvp /tmp/rs006/sim | tee /tmp/rs006/result.log
+          grep -q 'RS006_SPACEPATROL_TB_PASS' /tmp/rs006/result.log
