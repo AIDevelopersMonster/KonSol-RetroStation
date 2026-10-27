@@ -1,6 +1,6 @@
 # RS-007 MAZE CHASE RGB v0.1.0 — independent Tang Nano 9K arcade
 
-**STATUS: Icarus RTL SIM PASS (58 checks; GitHub Actions run 40465387709). Gowin FIT/STA NOT RUN. BOARD NOT RUN. NOT RELEASED.**
+**STATUS: Icarus SIM PASS 64 checks; Gowin FIT PASS; Setup/Hold STA 0/0 violations at 25.2 MHz (Actual Fmax 26.769 MHz) for two exact-hash builds. Recovery/Removal and analysis coverage still under review. BOARD NOT RUN. NOT RELEASED.**
 
 Original maze-chase game with **28×24** cells and **455 reachable collectible dots** (maze connectivity prechecked), three lives, score, 2 non-identical enemies (simple wall-turning patrol and greedy Manhattan chaser), WIN/LOSS and 4 palettes.
 
@@ -31,6 +31,17 @@ Expect `RS007_MAZECHASE_TB_PASS` only after the testbench finishes without `$fat
 ```
 
 The script creates a timestamped build workdir, verifies pinned SimpleVOut dependencies, and prints candidate `.fs` and SHA-256; **it does not program FPGA SRAM or Flash**. Check Logic/FF/SSRAM/BSRAM/PLL usage and full post-route Setup/Hold/Recovery/Removal and clocks before SRAM testing.
+
+## Exact-hash STA audit and evidence collection (PowerShell 7)
+
+Run this command on the Windows machine with the **20261027_124244** Gowin build:
+
+```powershell
+.\games\mazechase-rgb\tools\audit_sta.ps1 -BuildStamp 20261027_124244 `
+  -ExpectedSha256 9C7228E420385FE8F68C094AD221D075E7A2A22DF6CC28D6D299A858102FFB46
+```
+
+The audit script verifies the 2,070,601-byte `.fs`, SHA-256, Setup and Hold endpoint counts, pixel-clock Fmax, TNS, and Recovery/Removal tables. **It fails closed:** missing/unparseable Recovery/Removal data do not become PASS. It writes a local `RS007_STA_EVIDENCE_*.zip` containing the read-only HTML/report evidence and JSON summary, and **never programs the board**. Attach that ZIP for final review. The stage of reviewing unconstrained paths/CDC is distinct from the Gowin reported-path summary.
 
 ## Local UART keyboard
 
