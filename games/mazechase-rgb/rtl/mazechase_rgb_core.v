@@ -299,7 +299,7 @@ module mazechase_rgb_core #(
     wire banner=(state==READY || state==WON || state==LOST) &&
         blink[4] && py>=10'd445 && py<10'd463 &&
         px>=10'd174 && px<10'd466;
-    wire edge=py<10'd3 || py>=10'd477 || px<10'd3 || px>=10'd637;
+    wire screen_edge=py<10'd3 || py>=10'd477 || px<10'd3 || px>=10'd637;
 
     // SVO's packed color order is BGR888 (B high, R low).
     wire [23:0] bg=palette==0?24'h120B09:
@@ -323,6 +323,6 @@ module mazechase_rgb_core #(
                 state==LOST?24'h4D6BFF:24'hE5D96F):
         border?24'hB6B6F1:
         grid?24'h2B2B35:
-        edge?24'h425174:bg;
+        screen_edge?24'h425174:bg;
     wire _unused=^s_axis_tdata;
 endmodule
