@@ -88,6 +88,23 @@
       "release_url": "https://github.com/AIDevelopersMonster/KonSol-RetroStation/releases/tag/konsol-spacepatrol-rgb-v0.1.0",
       "source_url": "https://github.com/AIDevelopersMonster/KonSol-RetroStation/tree/main/games/spacepatrol-rgb",
       "controller_notes": "A/D или ←/→ — движение; F или пробел — огонь (удерживать); P — старт; R — сброс; 1–4 — палитры."
+    },
+    {
+      "id": "mazechase",
+      "name": "MAZE CHASE RGB",
+      "version": "v0.1.0",
+      "subtitle": "Лабиринт 28×24 · 455 точек",
+      "description": "Оригинальная FPGA-аркада: собрать 455 энергетических точек, избегая патрульного и преследователя. Три жизни, счёт, четыре палитры, победа и поражение. Аппаратная проверка подтверждена оператором.",
+      "color": "#f5c96b",
+      "mode": "MAZE CHASE",
+      "filename": "konsol_mazechase_rgb_nano9k.fs",
+      "size_bytes": 2070601,
+      "sha256": "9c7228e420385fe8f68c094ad221d075e7a2a22df6cc28d6d299a858102ffb46",
+      "release_repo": "AIDevelopersMonster/KonSol-RetroStation",
+      "release_tag": "konsol-mazechase-rgb-v0.1.0",
+      "release_url": "https://github.com/AIDevelopersMonster/KonSol-RetroStation/releases/tag/konsol-mazechase-rgb-v0.1.0",
+      "source_url": "https://github.com/AIDevelopersMonster/KonSol-RetroStation/tree/main/games/mazechase-rgb",
+      "controller_notes": "W/A/S/D или стрелки — направление; P или пробел — старт; R — рестарт; 1–4 — палитры. Клавиши передают одиночные UART-команды."
     }
   ]
 }

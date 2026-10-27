@@ -30,7 +30,7 @@ jobs:
   # Official release events therefore schedule a separate main-ref run;
   # this workflow must NEVER deploy directly from the tag ref.
   deploy_published_release_from_main:
-    if: github.event_name == 'release' && contains(fromJSON('["konsol-kblocks-rgb-v0.1.0", "konsol-lightcycles-rgb-v0.1.0", "konsol-spacepatrol-rgb-v0.1.0"]'), github.event.release.tag_name)
+    if: github.event_name == 'release' && contains(fromJSON('["konsol-kblocks-rgb-v0.1.0", "konsol-lightcycles-rgb-v0.1.0", "konsol-spacepatrol-rgb-v0.1.0", "konsol-mazechase-rgb-v0.1.0"]'), github.event.release.tag_name)
     runs-on: ubuntu-latest
     permissions:
       actions: write
@@ -146,6 +146,20 @@ jobs:
               --pattern konsol_spacepatrol_rgb_nano9k.fs --dir _site/console/firmware --clobber
           else
             echo 'CONSOLE_SPACEPATROL_LOCAL_ONLY: exact release pending'
+          fi
+      - name: Stage MAZE CHASE when exact official release exists
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          repo='AIDevelopersMonster/KonSol-RetroStation'
+          tag='konsol-mazechase-rgb-v0.1.0'
+          if gh release view "$tag" --repo "$repo" >/dev/null 2>&1; then
+            gh release download "$tag" --repo "$repo" \
+              --pattern konsol_mazechase_rgb_nano9k.fs --dir _site/console/firmware --clobber
+          else
+            echo 'CONSOLE_MAZECHASE_LOCAL_ONLY: exact release pending'
           fi
       - name: Bind all staged .fs assets to exact pinned hashes and sizes
         shell: bash
