@@ -1,6 +1,6 @@
 # KonSol RetroStation — RS-006 SPACE PATROL RGB v0.1.0
 
-**STATUS: SOURCE CANDIDATE. RTL/CI testing pending. GOWIN FIT/STA NOT RUN. BOARD NOT RUN. NOT RELEASED.**
+**STATUS: RTL CI SIM PASS (28 checks, run 40446452292); GOWIN FIT/STA NOT RUN; BOARD NOT RUN; NOT RELEASED.**
 
 Original native-Verilog space shooter for **Sipeed Tang Nano 9K (GW1NR-9C)**, HDMI 640x480, FT2232 UART B at 115200 8N1. Reuses the proven RS-005/LAB-04 clock, SimpleVOut pipeline, Gowin IP, pinout and programming infrastructure, without modifying any existing games.
 
