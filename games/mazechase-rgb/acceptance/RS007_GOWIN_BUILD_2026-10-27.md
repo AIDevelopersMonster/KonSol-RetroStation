@@ -54,6 +54,31 @@ Stage 1 registered dot-clearing. Stage 2 registered proposed moves and resolved 
 
 **Most recent detailed resource report supplied** is from older `20261027_122133`: Logic 2970/8640 (35%), registers 985/6693 (15%), BSRAM 0%, PLL 1/2; newer candidates' detailed resource reports have **not** been supplied. Do not attribute the old figures to the new files.
 
+## 2026-10-27 — local STA auditor corrected, operator preflight PASS/PENDING
+
+After audit parser fix `52fcb3111bd2b1d28826fe169fe76568736214d9`, the user reran the **local exact-hash auditor** on `20261027_124244`. Its standard output established:
+
+```text
+RS007_STA_HTML_ROWS=3557
+RS007_SHA256_PASS=9C7228E420385FE8F68C094AD221D075E7A2A22DF6CC28D6D299A858102FFB46
+RS007_BYTES=2070601
+RS007_SETUP_VIOLATIONS=0
+RS007_HOLD_VIOLATIONS=0
+RS007_PIXEL_FMAX_MHZ=26.769
+RS007_TNS_NS=0,0,0,0,0,0
+RS007_RECOVERY=INCONCLUSIVE MIN_SLACK_NS=
+RS007_REMOVAL=INCONCLUSIVE MIN_SLACK_NS=
+RS007_STA_VERDICT=ASYNC_REVIEW_REQUIRED
+RS007_NO_PROGRAMMING_PERFORMED=TRUE
+```
+
+The local evidence archive was created at:
+`games/mazechase-rgb/build/20261027_124244/work/RS007_STA_EVIDENCE_20261027_142635.zip`.
+
+**Interpretation:** Setup/Hold reported-path closure is reconfirmed; **Recovery/Removal remain *unparsed*, not failed**. The `ASYNC_REVIEW_REQUIRED` verdict means the asynchronous timing gate is not yet accepted. This transcript contains **no evidence** that those checks failed or passed. The exact archive stays on the operator PC until explicitly uploaded; no content from it has been inspected remotely.
+
+**Next:** inspect the archive's original HTML tables and constraint/report coverage; make a decision about the SRAM-only board gate. Do not run an unnecessary third Gowin build or present the audit parser status as a physical FPGA timing failure.
+
 ## Next acceptance gate (before SRAM-only testing)
 
 1. Confirm Recovery/Removal slacks on the chosen candidate; examine the report for unconstrained or unanalysed paths and external I/O timing coverage. Zero violated Setup/Hold endpoints is meaningful for **analyzed** paths, not proof that every path was constrained.
