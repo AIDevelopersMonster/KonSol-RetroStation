@@ -89,6 +89,28 @@
       "notes": "Operator-reported all three board tests PASS on 27 Oct 2026; 78-check SIM PASS; Gowin FIT 6513/8640 and positive sampled STA. Binary SHA pinned but publication pending: no release asset yet."
     },
     {
+      "id": "konsol-spacepatrol-rgb-v0-1-0",
+      "name": "KonSol RetroStation SPACE PATROL RGB v0.1.0",
+      "hardware_class": "FPGA",
+      "board_ids": [
+        "tang-nano-9k"
+      ],
+      "implementation": "Original native Verilog 24-enemy shooter HDMI+UART, no CPU",
+      "evidence_level": "operator_board_pass",
+      "source_url": "https://github.com/AIDevelopersMonster/KonSol-RetroStation/tree/main/games/spacepatrol-rgb",
+      "loader_url": "https://aidevelopersmonster.github.io/KonSol-RetroStation/console/",
+      "distribution": {
+        "status": "source_only",
+        "type": "gowin_fs",
+        "file": "konsol_spacepatrol_rgb_nano9k.fs",
+        "size_bytes": 2070601,
+        "sha256": "71005039f565aaa6c8530341b1a1758a29c6582f577e75f2dbd1fbc0ecf0a4fd",
+        "release_url": "https://github.com/AIDevelopersMonster/KonSol-RetroStation/releases/tag/konsol-spacepatrol-rgb-v0.1.0"
+      },
+      "license_note": "Original gameplay MIT; SimpleVOut ISC; Gowin vendor terms.",
+      "notes": "Operator reports working gameplay on Tang Nano 9K, 27 Oct 2026. Photo pending. SIM 28 checks, FIT 2437/8640 logic, positive sampled STA. Binary exact hash pinned; GitHub Release not yet uploaded."
+    },
+    {
       "id": "arduino-uno-breakout-touch",
       "name": "Arkanoid / Breakout Touch for Arduino UNO",
       "hardware_class": "MCU",

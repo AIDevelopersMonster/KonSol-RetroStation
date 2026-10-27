@@ -71,6 +71,23 @@
       "release_url": "https://github.com/AIDevelopersMonster/KonSol-RetroStation/releases/tag/konsol-lightcycles-rgb-v0.1.0",
       "source_url": "https://github.com/AIDevelopersMonster/KonSol-RetroStation/tree/main/games/lightcycles-rgb",
       "controller_notes": "W/A/S/D — первый игрок; I/J/K/L — второй; T — вкл/выкл ИИ; P — раунд; R — сброс; 1–4 — палитра."
+    },
+    {
+      "id": "spacepatrol",
+      "name": "SPACE PATROL RGB",
+      "version": "v0.1.0",
+      "subtitle": "24 противника · три жизни",
+      "description": "Оригинальный аппаратный космический шутер для Tang Nano 9K: движение корабля, два снаряда, противники, счёт, победа и поражение.",
+      "color": "#e8a4ff",
+      "mode": "SPACE PATROL",
+      "filename": "konsol_spacepatrol_rgb_nano9k.fs",
+      "size_bytes": 2070601,
+      "sha256": "71005039f565aaa6c8530341b1a1758a29c6582f577e75f2dbd1fbc0ecf0a4fd",
+      "release_repo": "AIDevelopersMonster/KonSol-RetroStation",
+      "release_tag": "konsol-spacepatrol-rgb-v0.1.0",
+      "release_url": "https://github.com/AIDevelopersMonster/KonSol-RetroStation/releases/tag/konsol-spacepatrol-rgb-v0.1.0",
+      "source_url": "https://github.com/AIDevelopersMonster/KonSol-RetroStation/tree/main/games/spacepatrol-rgb",
+      "controller_notes": "A/D или ←/→ — движение; F или пробел — огонь (удерживать); P — старт; R — сброс; 1–4 — палитры."
     }
   ]
 }
