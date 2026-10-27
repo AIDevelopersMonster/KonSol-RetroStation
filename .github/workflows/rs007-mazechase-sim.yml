@@ -24,9 +24,9 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          mkdir -p /tmp/rs006
-          iverilog -g2012 -Wall -s tb_mazechase_rgb_core -o /tmp/rs006/sim \
+          mkdir -p /tmp/rs007
+          iverilog -g2012 -Wall -s tb_mazechase_rgb_core -o /tmp/rs007/sim \
             games/mazechase-rgb/rtl/mazechase_rgb_core.v \
             games/mazechase-rgb/tests/tb_mazechase_rgb_core.v
-          vvp /tmp/rs006/sim | tee /tmp/rs006/result.log
-          grep -q 'RS007_MAZECHASE_TB_PASS' /tmp/rs006/result.log
+          vvp /tmp/rs007/sim | tee /tmp/rs007/result.log
+          grep -q 'RS007_MAZECHASE_TB_PASS' /tmp/rs007/result.log
