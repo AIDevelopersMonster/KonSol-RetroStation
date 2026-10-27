@@ -1,0 +1,32 @@
+name: RS-006 SPACE PATROL RTL simulation
+on:
+  pull_request:
+    paths:
+      - 'games/spacepatrol-rgb/**'
+      - '.github/workflows/rs005-spacepatrol-sim.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'games/spacepatrol-rgb/**'
+      - '.github/workflows/rs005-spacepatrol-sim.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  iverilog:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install Icarus Verilog
+        run: sudo apt-get update -qq && sudo apt-get install -y -qq iverilog
+      - name: Compile and run gameplay tests
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/rs006
+          iverilog -g2012 -Wall -s tb_spacepatrol_rgb_core -o /tmp/rs006/sim \
+            games/spacepatrol-rgb/rtl/spacepatrol_rgb_core.v \
+            games/spacepatrol-rgb/tests/tb_spacepatrol_rgb_core.v
+          vvp /tmp/rs006/sim | tee /tmp/rs006/result.log
+          grep -q 'RS006_SPACEPATROL_TB_PASS' /tmp/rs006/result.log
