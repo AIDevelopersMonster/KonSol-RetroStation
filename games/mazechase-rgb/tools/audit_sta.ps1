@@ -24,7 +24,29 @@ if ($hash -cne $ExpectedSha256.ToUpperInvariant()) {
 $bytes = (Get-Item -LiteralPath $fs).Length
 if ($bytes -ne 2070601) { throw "RS007_UNEXPECTED_FS_SIZE=$bytes" }
 
-$html = [IO.File]::ReadAllText($report)
+# First extract native HTML cells using the operator-verified table method.
+# Flattening the entire HTML BEFORE splitting rows hid Gowin summary values.
+$rawHtml = [IO.File]::ReadAllText($report)
+$Rows = @(
+    foreach ($Tr in [regex]::Matches($rawHtml, '(?is)<tr\b[^>]*>.*?</tr>')) {
+        $Cells = @(
+            foreach ($Td in [regex]::Matches(
+                $Tr.Value, '(?is)<t[dh]\b[^>]*>(.*?)</t[dh]>'
+            )) {
+                (
+                    [Net.WebUtility]::HtmlDecode(
+                        [regex]::Replace($Td.Groups[1].Value, '<[^>]+>', '')
+                    ).Trim() -replace '\s+', ' '
+                )
+            }
+        )
+        if ($Cells.Count -gt 0) { $Cells -join ' | ' }
+    }
+)
+Write-Host "RS007_STA_HTML_ROWS=$($Rows.Count)"
+
+# A separate readable version is retained for section diagnostics.
+$html = $rawHtml
 $html = [regex]::Replace($html, '(?is)<script\b[^>]*>.*?</script>', ' ')
 $html = [regex]::Replace($html, '(?is)<style\b[^>]*>.*?</style>', ' ')
 $html = [regex]::Replace($html, '(?is)<tr\b[^>]*>', [Environment]::NewLine)
@@ -39,7 +61,7 @@ $lines = @(
         Where-Object { $_.Length -gt 0 }
 )
 function Read-Count([string]$name) {
-    $rows = @($lines | Where-Object {
+    $rows = @($Rows | Where-Object {
         $_ -match ('^' + [regex]::Escape($name) + '\s*\|\s*\d+\s*(?:\||$)')
     })
     if ($rows.Count -ne 1) { return $null }
@@ -94,7 +116,7 @@ function Check-Async([string]$kind) {
 $setup=Read-Count 'Numbers of Setup Violated Endpoints'
 $hold=Read-Count 'Numbers of Hold Violated Endpoints'
 $fmax=$null
-foreach ($line in $lines) {
+foreach ($line in $Rows) {
     $m=[regex]::Match($line,'\|\s*25\.200\(MHz\)\s*\|\s*(\d+(?:\.\d+)?)\(MHz\)')
     if ($m.Success) {
         $fmax=[double]::Parse($m.Groups[1].Value,[Globalization.CultureInfo]::InvariantCulture)
@@ -102,7 +124,7 @@ foreach ($line in $lines) {
     }
 }
 $tns=@(
-    foreach ($line in $lines) {
+    foreach ($line in $Rows) {
         $m=[regex]::Match($line,'\|\s*(?:Setup|Hold)\s*\|\s*(-?\d+(?:\.\d+)?)\s*\|')
         if ($m.Success) {
             [double]::Parse($m.Groups[1].Value,[Globalization.CultureInfo]::InvariantCulture)
@@ -112,20 +134,34 @@ $tns=@(
 $recovery=Check-Async 'Recovery'
 $removal=Check-Async 'Removal'
 $negativeTns=@($tns | Where-Object { $_ -lt 0 })
-$corePass=($null -ne $setup -and $null -ne $hold -and $null -ne $fmax -and
-           $setup -eq 0 -and $hold -eq 0 -and $fmax -ge 25.2 -and
-           $tns.Count -ge 2 -and $negativeTns.Count -eq 0)
-$fail=(!$corePass -or $recovery.status -eq 'FAIL' -or $removal.status -eq 'FAIL')
+$summaryParsed=($null -ne $setup -and $null -ne $hold -and
+                $null -ne $fmax -and $tns.Count -ge 2)
+$reportShowsFailure=(
+    (($null -ne $setup) -and ($setup -gt 0)) -or
+    (($null -ne $hold) -and ($hold -gt 0)) -or
+    (($null -ne $fmax) -and ($fmax -lt 25.2)) -or
+    ($negativeTns.Count -gt 0) -or
+    ($recovery.status -eq 'FAIL') -or ($removal.status -eq 'FAIL')
+)
 $needsManual=($recovery.status -ne 'NONNEGATIVE_REPORTED_PATHS' -or
               $removal.status -ne 'NONNEGATIVE_REPORTED_PATHS')
-$verdict=if ($fail) { 'FAIL' } elseif ($needsManual) { 'ASYNC_REVIEW_REQUIRED' }
-         else { 'REPORTED_PATHS_PASS_COVERAGE_REVIEW' }
+$verdict=if ($reportShowsFailure) {
+    'STA_FAIL'
+} elseif (!$summaryParsed) {
+    'PARSER_INCONCLUSIVE'
+} elseif ($needsManual) {
+    'ASYNC_REVIEW_REQUIRED'
+} else {
+    'REPORTED_PATHS_PASS_COVERAGE_REVIEW'
+}
 $result=[ordered]@{
     board='Tang Nano 9K GW1NR-9C'
     buildStamp=$BuildStamp
     bitstream=$fs
     sha256=$hash
     bytes=$bytes
+    htmlTableRows=$Rows.Count
+    summaryParsed=$summaryParsed
     setupViolations=$setup
     holdViolations=$hold
     pixelFmaxMHz=$fmax
