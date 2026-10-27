@@ -30,6 +30,6 @@ with tempfile.TemporaryDirectory() as d:
     result = subprocess.run(["python3", str(root / "tools/build_console_site.py"), "--site", str(page)], capture_output=True, text=True)
     assert result.returncode == 0, result.stdout + result.stderr
     x = json.loads((page / "console/firmware/manifest.json").read_text("utf-8"))
-    assert len(x["profiles"]) == 5
+    assert len(x["profiles"]) == 6
     assert not any(p["published"] for p in x["profiles"])
 print("KONSOL_CONSOLE_STATIC_TEST_PASS: profiles=6, pinned-hash-only, SRAM-only, both browser transports")
