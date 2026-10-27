@@ -102,6 +102,8 @@ function selectProfile(id) {
   $("release-link").href = p.release_url;
   $("source-link").href = p.source_url;
   $("controls-description").textContent = p.controller_notes;
+  $("default-quick").hidden = p.id === "minitd";
+  $("minitd-quick").hidden = p.id !== "minitd";
   const published = remoteReady(p);
   const r = $("remote-status");
   r.textContent = published ? "GitHub READY" : "LOCAL .fs";
