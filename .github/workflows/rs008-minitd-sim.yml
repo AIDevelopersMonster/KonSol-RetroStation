@@ -1,0 +1,32 @@
+name: RS-008 MINI TD RTL simulation
+on:
+  pull_request:
+    paths:
+      - 'games/minitd-rgb/**'
+      - '.github/workflows/rs008-minitd-sim.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'games/minitd-rgb/**'
+      - '.github/workflows/rs008-minitd-sim.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  iverilog:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install Icarus Verilog
+        run: sudo apt-get update -qq && sudo apt-get install -y -qq iverilog
+      - name: Compile and run gameplay tests
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/rs008
+          iverilog -g2012 -Wall -s tb_minitd_rgb_core -o /tmp/rs008/sim \
+            games/minitd-rgb/rtl/minitd_rgb_core.v \
+            games/minitd-rgb/tests/tb_minitd_rgb_core.v
+          vvp /tmp/rs008/sim | tee /tmp/rs008/result.log
+          grep -q 'RS008_MINITD_TB_PASS' /tmp/rs008/result.log
