@@ -54,6 +54,23 @@
       "release_url": "https://github.com/AIDevelopersMonster/KonSol-RetroStation/releases/tag/konsol-kblocks-rgb-v0.1.0",
       "source_url": "https://github.com/AIDevelopersMonster/KonSol-RetroStation/tree/main/games/kblocks-rgb",
       "controller_notes": "←/→ — движение; ↑ — поворот; ↓ — ускорение; P — новая игра; R — сброс; 1–4 — цвета."
+    },
+    {
+      "id": "lightcycles",
+      "name": "LIGHT CYCLES RGB",
+      "version": "v0.1.0",
+      "subtitle": "Две световые трассы · 32×24",
+      "description": "Оригинальная FPGA-аркада: два игрока, столкновения и счёт, простой ИИ второго участника, четыре палитры. 3/3 операторских теста пройдены на Tang Nano 9K.",
+      "color": "#79c8ff",
+      "mode": "LIGHT CYCLES",
+      "filename": "konsol_lightcycles_rgb_nano9k.fs",
+      "size_bytes": 2070601,
+      "sha256": "018f5dfaacf7215039c17cc63c115172463bec554d05cb71c236b5606b315712",
+      "release_repo": "AIDevelopersMonster/KonSol-RetroStation",
+      "release_tag": "konsol-lightcycles-rgb-v0.1.0",
+      "release_url": "https://github.com/AIDevelopersMonster/KonSol-RetroStation/releases/tag/konsol-lightcycles-rgb-v0.1.0",
+      "source_url": "https://github.com/AIDevelopersMonster/KonSol-RetroStation/tree/main/games/lightcycles-rgb",
+      "controller_notes": "W/A/S/D — первый игрок; I/J/K/L — второй; T — вкл/выкл ИИ; P — раунд; R — сброс; 1–4 — палитра."
     }
   ]
 }

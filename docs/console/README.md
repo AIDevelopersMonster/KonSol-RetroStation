@@ -14,7 +14,8 @@ This URL is the **target of the Pages workflow**, not proof that Pages has been 
 | --- | --- | --- | --- |
 | Pong RGB v1.2 | Sipeed-FPGA release | `978d9bcf...f96` | Yes, after site build |
 | Breakout RGB v0.1.0 | Sipeed-FPGA release | `4cf80dbd...789` | Yes, after site build |
-| K-Blocks RGB v0.1.0 | KonSol-RetroStation release | `f842b196...c4e` | **Local `.fs` first**; automatic download only after exact binary release upload and automatic Pages rebuild |
+| K-Blocks RGB v0.1.0 | KonSol-RetroStation release | `f842b196...c4e` | Yes, after exact checked release staging |
+| Light Cycles RGB v0.1.0 | KonSol-RetroStation release | `018f5dfa...712` | **Local `.fs` initially**, automatic after exact binary release and verified Pages deploy |
 
 The browser uses `console/profiles.json` (pinned SHA and file size) and generated `console/firmware/manifest.json` (present/verified-at-deploy asset availability). A profile is displayed as remote ready only when the binary was successfully obtained and SHA-256 checked by the Pages workflow. The browser independently hashes the firmware again before programming. An arbitrary local `.fs` that does not match the selected profile's SHA is **rejected**.
 
@@ -23,9 +24,9 @@ The browser uses `console/profiles.json` (pinned SHA and file size) and generate
 ## Launch flow
 
 1. On Windows, use Chrome or Edge over HTTPS. Install WinUSB on FT2232 interface A (`MI_00`) if necessary, leave interface B (`MI_01`) as a COM port. Do not change the tested driver setup if it already works.
-2. Select Pong, Breakout or K-Blocks. Use **Get from GitHub** when available; otherwise select a local exact-bitstream `.fs`.
+2. Select Pong, Breakout, K-Blocks or Light Cycles. Use **Get from GitHub** when available; otherwise select a local exact-bitstream `.fs`.
 3. Confirm `SHA-256 PASS` and select **JTAG Debugger** (FT2232 `0403:6010`). Click **Program SRAM**. This is an explicit user action; the page never writes Flash.
-4. Check HDMI. If desired, connect **Web Serial** to the FT2232 COM port, click gamepad area and play with the keyboard. Pong: W/S and I/K; Breakout: arrows/A/D; K-Blocks: arrows plus P/R.
+4. Check HDMI. If desired, connect **Web Serial** to the FT2232 COM port, click gamepad area and play with the keyboard. Pong: W/S and I/K; Breakout: arrows/A/D; K-Blocks: arrows plus P/R; Light Cycles: WASD/IJKL, P/T/R, 1–4.
 5. When switching games, repeat the SRAM load; the games are mutually exclusive FPGA images.
 
 ## Publishing K-Blocks firmware from the tested Windows PC
