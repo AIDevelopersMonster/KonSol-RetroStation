@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#0b1523">
-  <meta name="description" content="KonSol RetroStation — браузерная игровая консоль и SRAM WebUSB-программатор для Sipeed Tang Nano 9K. Pong, Breakout, K-Blocks, Light Cycles, Space Patrol.">
+  <meta name="description" content="KonSol RetroStation — браузерная игровая консоль и SRAM WebUSB-программатор для Sipeed Tang Nano 9K. Pong, Breakout, K-Blocks, Light Cycles, Space Patrol, Maze Chase.">
   <title>KonSol RetroStation · FPGA GAME CONSOLE</title>
   <link rel="stylesheet" href="./style.css">
   <!-- MIT-licensed coi-serviceworker is downloaded from a pinned version of our existing PiKoSoL loader at Pages build time. -->
@@ -26,7 +26,7 @@
       <section class="hero">
         <div>
           <p class="eyebrow">WEBUSB / FPGA RETRO GAMING</p>
-          <h1>Три игры.<br><span>Одна FPGA.</span></h1>
+          <h1>Шесть игр.<br><span>Одна FPGA.</span></h1>
           <p class="lead">Выберите игру, загрузите проверенный битстрим из GitHub или с ПК, запрограммируйте <strong>только SRAM</strong> и управляйте игрой с клавиатуры через Web Serial. Реальная игровая графика выводится на HDMI.</p>
           <div class="capabilities"><span>GW1NR-9C</span><span>HDMI 640×480</span><span>FT2232 USB</span><span class="safe">SRAM ONLY</span></div>
         </div>
@@ -61,7 +61,7 @@
             <button id="local-button" class="button outline" type="button" disabled>↑ Выбрать локальный .fs</button>
             <input type="file" id="local-file" accept=".fs" hidden>
           </div>
-          <p class="help">Если K-BLOCKS ещё не опубликован как GitHub Release, доступен <b>локальный</b> файл той же проверенной сборки. Файл с другим SHA-256 будет отвергнут.</p>
+          <p class="help">Можно загрузить проверенный файл из GitHub Releases или выбрать локальный .fs с тем же SHA-256. Файлы с другим хешем отклоняются.</p>
           <div class="checksum"><span>ЭТАЛОН SHA-256</span><code id="expected-sha">—</code></div>
           <div class="checksum"><span>ФАКТИЧЕСКИЙ SHA-256</span><code id="actual-sha">Файл не выбран</code></div>
           <div class="result neutral" id="verification-status" role="status">Для программирования необходим точный SHA-256 PASS.</div>
@@ -88,7 +88,7 @@
           <p id="controls-description">Для каждой игры назначение клавиш своё.</p>
         </div>
         <div class="quick"><button class="button outline quick-cmd" data-command="p" type="button" disabled>▶ Старт</button><button class="button outline quick-cmd" data-command="r" type="button" disabled>↻ Рестарт</button><button class="button outline quick-cmd" data-command="1" type="button" disabled>Цвет 1</button><button class="button outline quick-cmd" data-command="2" type="button" disabled>Цвет 2</button><button class="button outline quick-cmd" data-command="3" type="button" disabled>Цвет 3</button><button class="button outline quick-cmd" data-command="4" type="button" disabled>Цвет 4</button></div>
-        <p class="help">В PONG кнопка «Старт» не требуется. Для BREAKOUT, K-BLOCKS, LIGHT CYCLES и SPACE PATROL клавиша P запускает игру. Потеря фокуса отправляет <code>x</code>, освобождая зажатые клавиши.</p>
+        <p class="help">В PONG кнопка «Старт» не требуется. Для BREAKOUT, K-BLOCKS, LIGHT CYCLES, SPACE PATROL и MAZE CHASE клавиша P запускает игру. Потеря фокуса отправляет <code>x</code>, освобождая зажатые клавиши.</p>
       </section>
 
       <section class="panel event-log"><div class="log-head"><div><p class="eyebrow">05 / DIAGNOSTICS</p><h2>Журнал программатора</h2></div><div class="log-actions"><button id="clear-log" class="button text-button" type="button">Очистить</button><button id="download-log" class="button text-button" type="button">Сохранить .txt</button></div></div><pre id="log" role="log" aria-live="off">KonSol RetroStation · WebUSB JTAG + Web Serial
