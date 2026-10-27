@@ -26,8 +26,27 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
+  # Pages environment may permit deployments only from main, not release tags.
+  # Official release events therefore schedule a separate main-ref run;
+  # this workflow must NEVER deploy directly from the tag ref.
+  deploy_published_release_from_main:
+    if: github.event_name == 'release' && contains(fromJSON('["konsol-kblocks-rgb-v0.1.0", "konsol-lightcycles-rgb-v0.1.0", "konsol-spacepatrol-rgb-v0.1.0"]'), github.event.release.tag_name)
+    runs-on: ubuntu-latest
+    permissions:
+      actions: write
+      contents: read
+    steps:
+      - name: Dispatch safe main-ref Pages deployment after release
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          gh workflow run publish-retrostation-console.yml \
+            --repo "$GITHUB_REPOSITORY" --ref main
+          echo "RELEASE_MAIN_PAGES_DISPATCH_PASS"
   build:
-    if: github.event_name != 'release' || contains(fromJSON('["konsol-kblocks-rgb-v0.1.0", "konsol-lightcycles-rgb-v0.1.0"]'), github.event.release.tag_name)
+    if: github.event_name != 'release'
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:
@@ -141,7 +160,7 @@ jobs:
         with:
           path: _site
   deploy:
-    if: github.event_name != 'release' || contains(fromJSON('["konsol-kblocks-rgb-v0.1.0", "konsol-lightcycles-rgb-v0.1.0"]'), github.event.release.tag_name)
+    if: github.event_name != 'release'
     runs-on: ubuntu-latest
     needs: build
     permissions:
