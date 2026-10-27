@@ -56,7 +56,7 @@ try {
     if ((Get-Item -LiteralPath $remote).Length -ne $expectedSize) { throw 'REMOTE_SIZE_FAIL' }
     Write-Host "RS007_REMOTE_RELEASE_SHA256_PASS: $downloadHash" -ForegroundColor Green
     Write-Host "RS007_RELEASE_PUBLISHED: https://github.com/$repo/releases/tag/$tag" -ForegroundColor Green
-    Write-Host 'GitHub Pages workflow will publish the exact checked asset after release is published.'
+    Write-Host 'NOTE: Console Pages does not yet have an RS-007 profile/release staging step; this publishes GitHub Release only.'
 } finally {
     Remove-Item -LiteralPath $temp -Recurse -Force -ErrorAction SilentlyContinue
 }
