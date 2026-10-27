@@ -2,7 +2,7 @@
 <#
 RS-008 MINI TD RGB: verify the exact operator STA-PASS candidate
 and program Tang Nano 9K volatile SRAM via Gowin programmer_cli.exe.
-Gowin Programmer SRAM Program operation is "--run 2".
+Gowin Programmer SRAM Program operation is "--operation_index 2".
 NEVER use run 5/6/36/37, --spiaddr or Flash/erase options here.
 No build, no Git writes, no configuration Flash writes.
 #>
@@ -64,8 +64,8 @@ Write-Host "RS008_FS=$fs"
 # A real invocation may be previewed with -WhatIf. The action is to
 # change ONLY the volatile SRAM of the connected Tang Nano 9K.
 if ($PSCmdlet.ShouldProcess('Tang Nano 9K GW1NR-9C volatile SRAM',
-    "program exact SHA-verified bitstream with Gowin programmer_cli --run 2")) {
-    & $cli --device GW1NR-9C --run 2 --fsFile $fs --cable-index $CableIndex
+    "program exact SHA-verified bitstream with Gowin programmer_cli --operation_index 2")) {
+    & $cli --device GW1NR-9C --operation_index 2 --fsFile $fs --cable-index $CableIndex
     $exitCode = $LASTEXITCODE
     if ($exitCode -ne 0) {
         throw "RS008_PROGRAMMER_CLI_FAILED_EXIT=$exitCode (verify USB/JTAG and driver)"
