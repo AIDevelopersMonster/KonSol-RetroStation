@@ -1,0 +1,32 @@
+name: RS-007 MAZE CHASE RTL simulation
+on:
+  pull_request:
+    paths:
+      - 'games/mazechase-rgb/**'
+      - '.github/workflows/rs007-mazechase-sim.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'games/mazechase-rgb/**'
+      - '.github/workflows/rs007-mazechase-sim.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  iverilog:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install Icarus Verilog
+        run: sudo apt-get update -qq && sudo apt-get install -y -qq iverilog
+      - name: Compile and run gameplay tests
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/rs007
+          iverilog -g2012 -Wall -s tb_mazechase_rgb_core -o /tmp/rs007/sim \
+            games/mazechase-rgb/rtl/mazechase_rgb_core.v \
+            games/mazechase-rgb/tests/tb_mazechase_rgb_core.v
+          vvp /tmp/rs007/sim | tee /tmp/rs007/result.log
+          grep -q 'RS007_MAZECHASE_TB_PASS' /tmp/rs007/result.log
