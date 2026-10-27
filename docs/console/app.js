@@ -102,6 +102,8 @@ function selectProfile(id) {
   $("release-link").href = p.release_url;
   $("source-link").href = p.source_url;
   $("controls-description").textContent = p.controller_notes;
+  $("default-quick").hidden = p.id === "minitd";
+  $("minitd-quick").hidden = p.id !== "minitd";
   const published = remoteReady(p);
   const r = $("remote-status");
   r.textContent = published ? "GitHub READY" : "LOCAL .fs";
@@ -228,6 +230,10 @@ function keyProtocol(key) {
     if (key === "ArrowLeft" || k === "a") return {down:"w",up:"W",action:"left"};
     if (key === "ArrowRight" || k === "d") return {down:"s",up:"S",action:"right"};
     if (["p", "r", "1", "2", "3", "4", " ", "enter"].includes(k)) return {once:k === "enter" || k === " " ? "p" : k};
+    return null;
+  }
+  if (current.id === "minitd") {
+    if (["1","2","3","4","t","b","p","c","r"," ","enter"].includes(k)) return {once:k === "enter" || k === " " ? "p" : k};
     return null;
   }
   if (current.id === "mazechase") {
@@ -382,8 +388,8 @@ async function start() {
     const response = await fetch("./profiles.json", {cache:"no-store"});
     if (!response.ok) throw Error(`Profiles HTTP ${response.status}`);
     const data = await response.json();
-    if (data.schema_version !== 1 || !Array.isArray(data.profiles) || data.profiles.length !== 6 ||
-        !data.profiles.every(validateProfile) || new Set(data.profiles.map(p => p.id)).size !== 6) {
+    if (data.schema_version !== 1 || !Array.isArray(data.profiles) || data.profiles.length !== 7 ||
+        !data.profiles.every(validateProfile) || new Set(data.profiles.map(p => p.id)).size !== 7) {
       throw Error("Неверный список прошивок или SHA-256");
     }
     profiles = data.profiles;

@@ -161,6 +161,20 @@ jobs:
           else
             echo 'CONSOLE_MAZECHASE_LOCAL_ONLY: exact release pending'
           fi
+      - name: Stage MINI TD when exact official release exists
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          repo='AIDevelopersMonster/KonSol-RetroStation'
+          tag='konsol-minitd-rgb-v0.1.0'
+          if gh release view "$tag" --repo "$repo" >/dev/null 2>&1; then
+            gh release download "$tag" --repo "$repo" \
+              --pattern konsol_minitd_rgb_nano9k.fs --dir _site/console/firmware --clobber
+          else
+            echo 'CONSOLE_MINITD_LOCAL_ONLY: exact release pending'
+          fi
       - name: Bind all staged .fs assets to exact pinned hashes and sizes
         shell: bash
         run: |

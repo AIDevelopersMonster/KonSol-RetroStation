@@ -134,6 +134,29 @@
       "notes": "27 Oct 2026: operator reported game works on Tang Nano 9K; 64-check RTL SIM PASS; Setup/Hold 0 endpoints, Recovery and Removal positive in the PnR report. GitHub release contains 2,070,601 byte fs with exact SHA-256."
     },
     {
+      "id": "konsol-minitd-rgb-v0-1-0",
+      "name": "KonSol RetroStation MINI TD RGB v0.1.0",
+      "hardware_class": "FPGA",
+      "board_ids": [
+        "tang-nano-9k"
+      ],
+      "implementation": "Original native Verilog tower defense, 24x16 tilemap, four tower pads, five waves, up to eight enemies, HDMI/UART, no CPU",
+      "evidence_level": "operator_board_pass",
+      "source_url": "https://github.com/AIDevelopersMonster/KonSol-RetroStation/tree/main/games/minitd-rgb",
+      "loader_url": "https://aidevelopersmonster.github.io/KonSol-RetroStation/console/",
+      "distribution": {
+        "status": "released",
+        "type": "gowin_fs",
+        "file": "konsol_minitd_rgb_nano9k.fs",
+        "size_bytes": 2070601,
+        "sha256": "af37412f8c22b3825ad0e2095eee241f20e0d2cd14fe38c3ad20cb3bafff1fb9",
+        "release_url": "https://github.com/AIDevelopersMonster/KonSol-RetroStation/releases/tag/konsol-minitd-rgb-v0.1.0",
+        "download_url": "https://github.com/AIDevelopersMonster/KonSol-RetroStation/releases/download/konsol-minitd-rgb-v0.1.0/konsol_minitd_rgb_nano9k.fs"
+      },
+      "license_note": "Original gameplay MIT; reused SimpleVOut ISC; Gowin vendor terms. SRAM-only.",
+      "notes": "27 October 2026: operator reports MINI TD works on Tang Nano 9K; 41-check simulation PASS, Gowin 0 Setup/Hold violations, Recovery/Removal positive; official GitHub asset 2,070,601 bytes with independently verified release SHA-256."
+    },
+    {
       "id": "arduino-uno-breakout-touch",
       "name": "Arkanoid / Breakout Touch for Arduino UNO",
       "hardware_class": "MCU",

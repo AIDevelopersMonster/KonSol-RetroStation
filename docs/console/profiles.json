@@ -105,6 +105,23 @@
       "release_url": "https://github.com/AIDevelopersMonster/KonSol-RetroStation/releases/tag/konsol-mazechase-rgb-v0.1.0",
       "source_url": "https://github.com/AIDevelopersMonster/KonSol-RetroStation/tree/main/games/mazechase-rgb",
       "controller_notes": "W/A/S/D или стрелки — направление; P или пробел — старт; R — рестарт; 1–4 — палитры. Клавиши передают одиночные UART-команды."
+    },
+    {
+      "id": "minitd",
+      "name": "MINI TD RGB",
+      "version": "v0.1.0",
+      "subtitle": "4 башни · 5 волн · защита базы",
+      "description": "Оригинальная аппаратная стратегия: 24×16 поле, фиксированный маршрут, 2 вида башен, 8 противников, пять волн и экономика строительства.",
+      "color": "#ffce64",
+      "mode": "MINI TD",
+      "filename": "konsol_minitd_rgb_nano9k.fs",
+      "size_bytes": 2070601,
+      "sha256": "af37412f8c22b3825ad0e2095eee241f20e0d2cd14fe38c3ad20cb3bafff1fb9",
+      "release_repo": "AIDevelopersMonster/KonSol-RetroStation",
+      "release_tag": "konsol-minitd-rgb-v0.1.0",
+      "release_url": "https://github.com/AIDevelopersMonster/KonSol-RetroStation/releases/tag/konsol-minitd-rgb-v0.1.0",
+      "source_url": "https://github.com/AIDevelopersMonster/KonSol-RetroStation/tree/main/games/minitd-rgb",
+      "controller_notes": "1–4 — выбрать место; T — сменить тип башни; B — строить; P/пробел — следующая волна; C — палитра; R — сброс."
     }
   ]
 }
