@@ -7,9 +7,9 @@ import subprocess
 
 root = pathlib.Path(__file__).resolve().parents[1]
 profiles = json.loads((root / "docs/console/profiles.json").read_text("utf-8"))["profiles"]
-assert [p["id"] for p in profiles] == ["pong", "breakout", "kblocks"]
+assert [p["id"] for p in profiles] == ["pong", "breakout", "kblocks", "lightcycles"]
 assert all(p["size_bytes"] == 2070601 for p in profiles)
-assert len({p["sha256"] for p in profiles}) == 3
+assert len({p["sha256"] for p in profiles}) == 4
 app = (root / "docs/console/app.js").read_text("utf-8")
 assert "FIXED_PROGRAM_ARGS" in app
 assert '["-c", "ft2232", "-b", "tangnano9k", "game.fs"]' in app
@@ -29,6 +29,6 @@ with tempfile.TemporaryDirectory() as d:
     result = subprocess.run(["python3", str(root / "tools/build_console_site.py"), "--site", str(page)], capture_output=True, text=True)
     assert result.returncode == 0, result.stdout + result.stderr
     x = json.loads((page / "console/firmware/manifest.json").read_text("utf-8"))
-    assert len(x["profiles"]) == 3
+    assert len(x["profiles"]) == 4
     assert not any(p["published"] for p in x["profiles"])
-print("KONSOL_CONSOLE_STATIC_TEST_PASS: profiles=3, pinned-hash-only, SRAM-only, both browser transports")
+print("KONSOL_CONSOLE_STATIC_TEST_PASS: profiles=4, pinned-hash-only, SRAM-only, both browser transports")
