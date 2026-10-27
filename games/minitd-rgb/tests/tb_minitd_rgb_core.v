@@ -86,7 +86,7 @@ module tb_minitd_rgb_core;
         dut.enemy_pos[0]=5;dut.enemy_hp[0]=2;
         dut.enemy_pos[2]=7;dut.enemy_hp[2]=2;
         // Pad0 (6,1), route y=3: pos5 (x6) and pos7 (x8) in range.
-        repeat(9) @(negedge clk);
+        repeat(8) @(negedge clk);
         check(dut.phase==2 && dut.best_valid && dut.best_idx==2,"serialized scan selects furthest in-range enemy");
         @(negedge clk);
         check(dut.enemy_hp[2]==1 && dut.enemy_hp[0]==2,"light tower hits selected target");
@@ -94,7 +94,7 @@ module tb_minitd_rgb_core;
         @(negedge clk);
         dut.phase=1;dut.tower_idx=0;dut.scan_idx=0;
         dut.best_valid=0;dut.best_progress=0;
-        repeat(9) @(negedge clk);
+        repeat(8) @(negedge clk);
         @(negedge clk);
         check(!dut.enemy_active[2] && dut.credits==2 && dut.kills==1,
               "kill yields one credit and increases score");
