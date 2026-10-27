@@ -16,7 +16,7 @@ This URL is the **target of the Pages workflow**, not proof that Pages has been 
 | Breakout RGB v0.1.0 | Sipeed-FPGA release | `4cf80dbd...789` | Yes, after site build |
 | K-Blocks RGB v0.1.0 | KonSol-RetroStation release | `f842b196...c4e` | Yes, after exact checked release staging |
 | Light Cycles RGB v0.1.0 | KonSol-RetroStation release | `018f5dfa...712` | Yes, after verified release staging |
-| Space Patrol RGB v0.1.0 | KonSol-RetroStation release | `71005039...4fd` | **Local `.fs` first**, automatic after exact release and Pages deployment |
+| Space Patrol RGB v0.1.0 | KonSol-RetroStation release | `71005039...4fd` | Official release published; Pages requires refreshed SHA-verified manifest |
 
 The browser uses `console/profiles.json` (pinned SHA and file size) and generated `console/firmware/manifest.json` (present/verified-at-deploy asset availability). A profile is displayed as remote ready only when the binary was successfully obtained and SHA-256 checked by the Pages workflow. The browser independently hashes the firmware again before programming. An arbitrary local `.fs` that does not match the selected profile's SHA is **rejected**.
 
