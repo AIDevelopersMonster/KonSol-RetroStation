@@ -1,6 +1,6 @@
 # KonSol RetroStation — RS-005 LIGHT CYCLES RGB v0.1.0
 
-**STATUS: RTL SIM PASS (78 checks; GitHub Actions + Windows PowerShell operator). GOWIN FIT/STA NOT RUN. BOARD NOT RUN. NOT RELEASED.**
+**STATUS: RTL SIM PASS 78/78 · Gowin FIT PASS (6513/8640 Logic) · sample STA positive · OPERATOR BOARD PASS (3/3 checks) · binary release pending.**
 
 A two-player original neon-trail arena game for Sipeed Tang Nano 9K (GW1NR-9C), 640×480 HDMI, native Verilog (no CPU, SD, external RAM or framebuffer). Uses the same Sipeed-FPGA sibling dependency as RS-004 K-BLOCKS for the proven display, clocks, serializer and UART transport.
 
@@ -33,7 +33,7 @@ git pull --ff-only
 .\games\lightcycles-rgb\build.ps1 -SipeedFpgaRoot C:\GitHub\Sipeed-FPGA
 ```
 
-This is an **isolated build** and creates a SHA-256-identified candidate `.fs`. Before any programming check PnR resource utilization, all clocks, TNS, setup/hold/recovery/removal, exceptions and unconstrained paths. Never reuse RS-004 SHA or STA.
+**Operator-tested exact candidate:** `build/20261026_185436/work/impl/pnr/konsol_lightcycles_rgb_nano9k.fs`, SHA-256 `018F5DFAACF7215039C17CC63C115172463BEC554D05CB71C236B5606B315712` (2,070,601 bytes). [Board receipt](acceptance/RS005_BOARD_2026-10-27.md) and [STA audit](acceptance/RS005_STA_2026-10-27.md). Run `publish_release.ps1 -Bitstream <local verified .fs>` for dry run, then add `-Publish` to upload the exact candidate after merging this PR to main. This is an **isolated build** and creates a SHA-256-identified candidate `.fs`. Before any programming check PnR resource utilization, all clocks, TNS, setup/hold/recovery/removal, exceptions and unconstrained paths. Never reuse RS-004 SHA or STA.
 
 ## Hardware check plan (after successful FIT/STA)
 
@@ -53,4 +53,4 @@ Choose actual UART COM number. This script does not program FPGA. **Do not write
 
 Gameplay and integration MIT. Sipeed-FPGA shared video uses upstream SimpleVOut ISC and Gowin IP licensing separately. Sources and bitstreams remain in **KonSol-RetroStation**, without modifying RS-003 / RS-004.
 
-**EN:** Independent two-light-trail game with 32×24 grid, two riders, deterministic game state, wall/trail collision, manual two-player mode and a simple optional opponent. This candidate is **not a released bitstream**.
+**EN:** Independent two-light-trail game with 32×24 grid, two riders, deterministic game state, wall/trail collision, manual two-player mode and a simple optional opponent. Operator board PASS recorded; the verified bitstream **has not yet been uploaded as a release asset**.
