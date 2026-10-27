@@ -1,6 +1,6 @@
 # KonSol RetroStation — RS-006 SPACE PATROL RGB v0.1.0
 
-**STATUS: RTL CI SIM PASS (28 checks, run 40446452292); GOWIN FIT/STA NOT RUN; BOARD NOT RUN; NOT RELEASED.**
+**STATUS: SIM PASS 28/28 · Gowin FIT PASS 2437/8640 logic · positive sampled STA · OPERATOR BOARD PASS · exact binary release pending.**
 
 Original native-Verilog space shooter for **Sipeed Tang Nano 9K (GW1NR-9C)**, HDMI 640x480, FT2232 UART B at 115200 8N1. Reuses the proven RS-005/LAB-04 clock, SimpleVOut pipeline, Gowin IP, pinout and programming infrastructure, without modifying any existing games.
 
@@ -18,7 +18,7 @@ Original native-Verilog space shooter for **Sipeed Tang Nano 9K (GW1NR-9C)**, HD
 - **A/D** or **Left/Right**: move (key-down/key-up semantics).
 - **F** or **Space**: fire and hold to repeat.
 - **P**: start/restart; **R**: reset; **1–4**: palettes; **Q/Esc**: exit host controller.
-- FT2232 B COM port, 115200 8N1. The existing browser console does **not** yet have an RS-006 profile; add it only after SHA-pinned board acceptance.
+- FT2232 B COM port, 115200 8N1. Browser console profile is planned after source merge; it will require the exact SHA-256-pinned binary.
 
 ## Local simulation (PowerShell 7)
 
@@ -37,13 +37,13 @@ The testbench checks reset/start, source backpressure, movement, projectile timi
 .\games\spacepatrol-rgb\build.ps1 -SipeedFpgaRoot C:\GitHub\Sipeed-FPGA
 ```
 
-The script validates pinned SVO source and runs Gowin CLI in a timestamped folder; it does not program the FPGA. Treat all generated .fs files as **candidate only** until exact-build resources, setup/hold/recovery/removal, clock constraints, unconstrained paths and the STA audit have been reviewed.
+The script validates pinned SVO source and runs Gowin CLI in a timestamped folder; it does not program the FPGA. The tested candidate is `build/20261027_070050/work/impl/pnr/konsol_spacepatrol_rgb_nano9k.fs`, SHA-256 `71005039F565AAA6C8530341B1A1758A29C6582F577E75F2DBD1FBC0ECF0A4FD`. [Gowin receipt](acceptance/RS006_GOWIN_BUILD_2026-10-27.md); [operator board receipt](acceptance/RS006_BOARD_2026-10-27.md). Do not claim exhaustive STA/CDC certification.
 
 ## Hardware gate (2–3 focused tests; never write Flash)
 
 1. **SRAM-only** loading and stable HDMI; movable ship, 24 enemies and visible bullets.
 2. FT2232 UART via PowerShell: move, fire, destroy targets, score and life loss.
-3. Win/lose, restart, reset and four palettes. Confirm exact SHA-256 and document operator observations, then publish an immutable release and fourth/fifth console profile.
+3. Win/lose, restart, reset and four palettes. The operator reports gameplay working. Publish the immutable exact-hash candidate as a release, then activate fifth console profile.
 
 Use the controller (no FPGA programming):
 
