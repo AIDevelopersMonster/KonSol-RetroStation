@@ -27,7 +27,7 @@ concurrency:
 
 jobs:
   build:
-    if: github.event_name != 'release' || github.event.release.tag_name == 'konsol-kblocks-rgb-v0.1.0'
+    if: github.event_name != 'release' || contains(fromJSON('["konsol-kblocks-rgb-v0.1.0", "konsol-lightcycles-rgb-v0.1.0"]'), github.event.release.tag_name)
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:
@@ -100,6 +100,20 @@ jobs:
           else
             echo 'CONSOLE_KBLOCKS_LOCAL_ONLY: release not yet published; exact local .fs remains usable.'
           fi
+      - name: Add LIGHT CYCLES only when its SHA-pinned release exists
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          repo='AIDevelopersMonster/KonSol-RetroStation'
+          tag='konsol-lightcycles-rgb-v0.1.0'
+          if gh release view "$tag" --repo "$repo" >/dev/null 2>&1; then
+            gh release download "$tag" --repo "$repo" \
+              --pattern konsol_lightcycles_rgb_nano9k.fs --dir _site/console/firmware --clobber
+          else
+            echo 'CONSOLE_LIGHTCYCLES_LOCAL_ONLY: release not yet published.'
+          fi
       - name: Bind all staged .fs assets to exact pinned hashes and sizes
         shell: bash
         run: |
@@ -113,7 +127,7 @@ jobs:
         with:
           path: _site
   deploy:
-    if: github.event_name != 'release' || github.event.release.tag_name == 'konsol-kblocks-rgb-v0.1.0'
+    if: github.event_name != 'release' || contains(fromJSON('["konsol-kblocks-rgb-v0.1.0", "konsol-lightcycles-rgb-v0.1.0"]'), github.event.release.tag_name)
     runs-on: ubuntu-latest
     needs: build
     permissions:
