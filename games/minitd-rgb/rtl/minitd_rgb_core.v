@@ -15,7 +15,8 @@ module minitd_rgb_core #(
     input wire s_axis_tvalid, s_axis_tready,
     input wire [23:0] s_axis_tdata,
     input wire [0:0] s_axis_tuser,
-    output wire m_axis_tvalid, m_axis_tready,
+    output wire m_axis_tvalid,
+    input wire m_axis_tready,
     output wire [23:0] m_axis_tdata,
     output wire [0:0] m_axis_tuser
 );
