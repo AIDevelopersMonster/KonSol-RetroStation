@@ -1,6 +1,6 @@
 # RS-008 MINI TD RGB v0.1.0 — original FPGA tower defense candidate
 
-**STATUS: RTL candidate, simulation and STA must pass before board loading. NOT RELEASED.**
+**STATUS: RTL SIM PASS 41 checks (GitHub Actions #40558530333); Gowin FIT/STA NOT RUN; BOARD NOT RUN; NOT RELEASED.**
 
 Native Verilog for Sipeed Tang Nano 9K / GW1NR-9C. HDMI 640x480 at pixel clock 25.2 MHz; FT2232 UART B 115200 8N1; SRAM-only bitstream. No processor, external RAM, ROM or frame buffer.
 
