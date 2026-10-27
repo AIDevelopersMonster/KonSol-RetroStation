@@ -187,20 +187,40 @@ module mazechase_rgb_core #(
     wire mortal_collision=collision && grace==0;
     wire eat=collect && !mortal_collision;
 
-    // Dots are a single state plane; only one bit is cleared per game tick.
-    // Never write pixels into a full 640x480 framebuffer.
+    // STA fix: the game step produces a registered dot-clear event.
+    // Commit the addressed bit one pixel clock later. This cuts the
+    // player_x -> collision/collect -> every dots[] write-enable path.
+    // Score/life/win logic still executes on the original game step.
+    // The game-frame interval is far longer than one 25.2 MHz clock.
+    reg dot_clear_valid;
+    reg [4:0] dot_clear_x,dot_clear_y;
+    always @(posedge clk or negedge reset_n) begin
+        if(!reset_n) begin
+            dot_clear_valid<=1'b0;
+            dot_clear_x<=5'd0;
+            dot_clear_y<=5'd0;
+        end else begin
+            dot_clear_valid<=frame_tick && state==PLAY && step_due && eat;
+            if(frame_tick && state==PLAY && step_due && eat) begin
+                dot_clear_x<=p_next_x;
+                dot_clear_y<=p_next_y;
+            end
+        end
+    end
+
+    // Dot plane remains a 28x24 register map with one clearing write.
+    // Reset/start has precedence and cannot be undone by stale events.
     integer row;
     always @(posedge clk or negedge reset_n) begin
         if(!reset_n) begin
             for(row=0;row<24;row=row+1)
                 dots[row]<=initial_dots(row);
-        end else if(frame_tick) begin
-            if(reset_pending || (state!=PLAY && start_pending)) begin
-                for(row=0;row<24;row=row+1)
-                    dots[row]<=initial_dots(row);
-            end else if(state==PLAY && step_due && eat) begin
-                dots[p_next_y][p_next_x]<=1'b0;
-            end
+        end else if(frame_tick &&
+            (reset_pending || (state!=PLAY && start_pending))) begin
+            for(row=0;row<24;row=row+1)
+                dots[row]<=initial_dots(row);
+        end else if(dot_clear_valid) begin
+            dots[dot_clear_y][dot_clear_x]<=1'b0;
         end
     end
 
