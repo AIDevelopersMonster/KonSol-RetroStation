@@ -1,6 +1,6 @@
 {
   "schema_version": "0.1",
-  "reviewed_on": "2026-10-26",
+  "reviewed_on": "2026-10-27",
   "games": [
     {
       "id": "pikosol-pong-rgb-v1-2",
@@ -64,6 +64,29 @@
       },
       "license_note": "Original RTL MIT; SVO ISC; Gowin vendor terms. No commercial game ROM or art.",
       "notes": "26 Oct 2026: SIM PASS 53 tests; Gowin build/PnR resource fit and positive sampled STA; operator reports game works on Tang Nano 9K. Exact local candidate 2,070,601 bytes SHA256 F842B196CB4A56E0C18DEF1C471CBDDC82F59F0B552A27F553FDFF9692BBDC4E. Binary release and new browser WebUSB BOARD PASS still pending."
+    },
+    {
+      "id": "konsol-lightcycles-rgb-v0-1-0",
+      "name": "KonSol RetroStation LIGHT CYCLES RGB v0.1.0",
+      "hardware_class": "FPGA",
+      "board_ids": [
+        "tang-nano-9k"
+      ],
+      "implementation": "Native Verilog two-player light-trail game 32x24; no CPU or external RAM",
+      "evidence_level": "operator_board_pass",
+      "source_url": "https://github.com/AIDevelopersMonster/KonSol-RetroStation/tree/main/games/lightcycles-rgb",
+      "loader_url": "https://aidevelopersmonster.github.io/KonSol-RetroStation/console/",
+      "distribution": {
+        "status": "source_only",
+        "type": "gowin_fs",
+        "file": "konsol_lightcycles_rgb_nano9k.fs",
+        "size_bytes": 2070601,
+        "sha256": "018f5dfaacf7215039c17cc63c115172463bec554d05cb71c236b5606b315712",
+        "release_url": "https://github.com/AIDevelopersMonster/KonSol-RetroStation/releases/tag/konsol-lightcycles-rgb-v0.1.0",
+        "download_url": "https://github.com/AIDevelopersMonster/KonSol-RetroStation/releases/download/konsol-lightcycles-rgb-v0.1.0/konsol_lightcycles_rgb_nano9k.fs"
+      },
+      "license_note": "Original game RTL MIT; shared SVO ISC; Gowin IP subject to vendor terms.",
+      "notes": "Operator-reported all three board tests PASS on 27 Oct 2026; 78-check SIM PASS; Gowin FIT 6513/8640 and positive sampled STA. Binary SHA pinned but publication pending: no release asset yet."
     },
     {
       "id": "arduino-uno-breakout-touch",
