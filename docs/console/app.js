@@ -230,6 +230,14 @@ function keyProtocol(key) {
     if (["p", "r", "1", "2", "3", "4", " ", "enter"].includes(k)) return {once:k === "enter" || k === " " ? "p" : k};
     return null;
   }
+  if (current.id === "mazechase") {
+    if (key === "ArrowUp") return {once:"w"};
+    if (key === "ArrowLeft") return {once:"a"};
+    if (key === "ArrowDown") return {once:"s"};
+    if (key === "ArrowRight") return {once:"d"};
+    if (["w","a","s","d","p","r","1","2","3","4"," ","enter"].includes(k)) return {once:k === "enter" || k === " " ? "p" : k};
+    return null;
+  }
   if (current.id === "spacepatrol") {
     if (key === "ArrowLeft" || k === "a") return {down:"a",up:"A",action:"left"};
     if (key === "ArrowRight" || k === "d") return {down:"d",up:"D",action:"right"};
@@ -374,8 +382,8 @@ async function start() {
     const response = await fetch("./profiles.json", {cache:"no-store"});
     if (!response.ok) throw Error(`Profiles HTTP ${response.status}`);
     const data = await response.json();
-    if (data.schema_version !== 1 || !Array.isArray(data.profiles) || data.profiles.length !== 5 ||
-        !data.profiles.every(validateProfile) || new Set(data.profiles.map(p => p.id)).size !== 5) {
+    if (data.schema_version !== 1 || !Array.isArray(data.profiles) || data.profiles.length !== 6 ||
+        !data.profiles.every(validateProfile) || new Set(data.profiles.map(p => p.id)).size !== 6) {
       throw Error("Неверный список прошивок или SHA-256");
     }
     profiles = data.profiles;
