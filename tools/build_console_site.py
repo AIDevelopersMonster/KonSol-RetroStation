@@ -13,7 +13,7 @@ import pathlib
 import sys
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
-EXPECTED_IDS = {"pong", "breakout", "kblocks", "lightcycles", "spacepatrol"}
+EXPECTED_IDS = {"pong", "breakout", "kblocks", "lightcycles", "spacepatrol", "mazechase"}
 BASELINE = {"pong", "breakout"}
 
 def validate_catalog(profiles):
@@ -36,8 +36,8 @@ def build(site, require_baseline):
     assert config["schema_version"] == 1
     entries = config["profiles"]
     profiles = {p["id"]: p for p in entries}
-    if set(profiles) != EXPECTED_IDS or len(entries) != 5:
-        raise ValueError("Expected exactly pong, breakout, kblocks, lightcycles, spacepatrol profiles")
+    if set(profiles) != EXPECTED_IDS or len(entries) != 6:
+        raise ValueError("Expected exactly pong, breakout, kblocks, lightcycles, spacepatrol, mazechase profiles")
     validate_catalog(profiles)
     fw_dir = site / "console" / "firmware"
     fw_dir.mkdir(parents=True, exist_ok=True)
