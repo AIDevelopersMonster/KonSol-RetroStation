@@ -79,9 +79,29 @@ The local evidence archive was created at:
 
 **Next:** inspect the archive's original HTML tables and constraint/report coverage; make a decision about the SRAM-only board gate. Do not run an unnecessary third Gowin build or present the audit parser status as a physical FPGA timing failure.
 
-## Next acceptance gate (before SRAM-only testing)
+## Final original HTML STA audit — operator ZIP (2026-10-27)
 
-1. Confirm Recovery/Removal slacks on the chosen candidate; examine the report for unconstrained or unanalysed paths and external I/O timing coverage. Zero violated Setup/Hold endpoints is meaningful for **analyzed** paths, not proof that every path was constrained.
+Source archive: `RS007_STA_EVIDENCE_20261027_142635.zip`, SHA-256 `59C66D4DC794B951D9594C34CD07627F72E2DE69B0E6FD844AC3E045FCB2C117`. The archive contains `konsol_mazechase_rgb_nano9k_tr_content.html`, `.rpt.txt`, PnR log, SDC/CST and original audit JSON. The **binary .fs itself is not in the ZIP**; firmware identity is taken from the operator's separately measured exact SHA and 2,070,601-byte length.
+
+**Original Gowin HTML, independently inspected:** reported paths are all positive; the local audit script's `ASYNC_REVIEW_REQUIRED` was a **parser limitation**, not a Recovery/Removal violation.
+
+| Analysis | Min slack in Gowin first 25 reported paths | Result |
+| --- | ---: | --- |
+| Setup | **+2.326 ns** | PASS; 0 violating endpoints |
+| Hold | **+0.599 ns** | PASS; 0 violating endpoints |
+| Recovery | **+0.226 ns** | PASS for reported paths |
+| Removal | **+1.764 ns** | PASS for reported paths |
+| Minimum Pulse Width | **+2.640 ns** | PASS for 10 listed cases |
+
+Other exact report evidence: `6138` analyzed paths, `3074` analyzed endpoints, `3` falling endpoints; six Setup/Hold TNS rows `0.000`; generated 25.2 MHz video clock **Actual Fmax 26.769 MHz**; 126 MHz domain Actual Fmax **525.803 MHz**. Timing Exceptions section says **No timing exceptions to report!** for Setup, Hold, Recovery, Removal. The base 27 MHz clock says **No timing paths to get frequency of clk_27mhz!**; this is not equivalent to complete asynchronous-I/O timing coverage.
+
+Original `konsol_mazechase_rgb_nano9k.rpt.txt` for selected `124244`: **Logic 2929/8640 (34%)**, **LUT 2590**, ALU 243, SSRAM 16, **registers 1014/6693 (16%)**, BSRAM 0%, DSP 0%, PLL 1/2, CLKDIV 1/8, OSER10 3. Gowin version **V1.9.9 Beta-4 Education**, part **GW1NR-LV9QN88PC6/I5**. The report SDC has only `create_clock -name clk_27mhz -period 37.037 ...`; generated clocks are auto-recognized by Gowin. External UART RX and reset_n are asynchronous and no complete external-input timing/CDC certification is claimed.
+
+**Disposition:** FPGA `20261027_124244` with exact operator SHA `9C7228E420385FE8F68C094AD221D075E7A2A22DF6CC28D6D299A858102FFB46` is **eligible for a limited operator SRAM-only board smoke test** (HDMI/video then UART/gameplay). Do not write Flash. This does not authorize merging the draft PR, creating a GitHub Release, or listing a sixth console profile before BOARD PASS. Preserve the old failed candidates as rejected.
+
+## Operator board acceptance (after reported-path STA PASS)
+
+1. **Completed for reported paths:** Recovery +0.226 ns, Removal +1.764 ns, MPW +2.640 ns; exceptions absent. Full external asynchronous-I/O/CDC coverage remains a documented limitation, not a reason to claim absolute STA certification.
 2. Pin exactly **candidate 2** `20261027_124244`, SHA-256 `9C7228E420385FE8F68C094AD221D075E7A2A22DF6CC28D6D299A858102FFB46` for a first hardware trial. Never use the older negative-STA images.
 3. If remaining timing checks are satisfactory, operator performs 2–3 **volatile SRAM-only** board checks: HDMI + maze rendering; UART movement, dots/score and both enemies; collision/lives, reset/palettes/restart. No Flash.
 4. Record operator board outcome and exact uploaded SHA before merging PR #7, publishing a binary release, or adding sixth browser-console profile. Do not present SIM/FIT/STA as a substitute for board evidence.
