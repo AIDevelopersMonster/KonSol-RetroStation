@@ -174,53 +174,87 @@ module mazechase_rgb_core #(
     wire [4:0] chase_ny=chase_can_move?
         next_y(chaser_y,chase_choice):chaser_y;
 
-    // Same-tile collision or exchanging player/enemy positions in a tick.
-    wire patrol_hit=((p_next_x==patrol_nx && p_next_y==patrol_ny) ||
-                     (p_next_x==patrol_x && p_next_y==patrol_y) ||
-                     (player_x==patrol_nx && player_y==patrol_ny &&
-                      p_next_x==patrol_x && p_next_y==patrol_y));
-    wire chase_hit=((p_next_x==chase_nx && p_next_y==chase_ny) ||
-                    (p_next_x==chaser_x && p_next_y==chaser_y) ||
-                    (player_x==chase_nx && player_y==chase_ny &&
-                     p_next_x==chaser_x && p_next_y==chaser_y));
-    wire collision=patrol_hit||chase_hit;
-    wire mortal_collision=collision && grace==0;
-    wire eat=collect && !mortal_collision;
+    // Two short pipeline stages separate movement/AI and collision/dot
+    // lookup from scoring, lives, grace and the 672-bit map write enables.
+    // Stage 1: at a game-frame step capture the proposed positions.
+    // Stage 2: on the next pixel clock resolve collisions and the dot.
+    // Stage 3: on the following pixel clock commit the entire game result.
+    // No extra clock/CDC: these are ALL 25.2 MHz pixel-clock registers.
+    wire round_restart=frame_tick &&
+        (reset_pending || (state!=PLAY && start_pending));
+    wire step_request=frame_tick && state==PLAY && step_due &&
+        !reset_pending;
+    reg proposed_valid;
+    reg [4:0] proposed_px,proposed_py;
+    reg [4:0] proposed_patrol_x,proposed_patrol_y;
+    reg [4:0] proposed_chaser_x,proposed_chaser_y;
+    reg [1:0] proposed_patrol_dir,proposed_chaser_dir;
+    reg proposed_moved,proposed_grace_active;
+    reg resolved_valid,resolved_hit,resolved_collect;
+    wire resolved_eat=resolved_collect && !resolved_hit;
 
-    // STA fix: the game step produces a registered dot-clear event.
-    // Commit the addressed bit one pixel clock later. This cuts the
-    // player_x -> collision/collect -> every dots[] write-enable path.
-    // Score/life/win logic still executes on the original game step.
-    // The game-frame interval is far longer than one 25.2 MHz clock.
-    reg dot_clear_valid;
-    reg [4:0] dot_clear_x,dot_clear_y;
+    // Retain the old state coordinates until the event is committed.
+    // Detect same-tile contact and a head-on crossing (swap).
+    wire patrol_hit=((proposed_px==proposed_patrol_x &&
+                      proposed_py==proposed_patrol_y) ||
+                     (proposed_px==patrol_x && proposed_py==patrol_y) ||
+                     (player_x==proposed_patrol_x &&
+                      player_y==proposed_patrol_y &&
+                      proposed_px==patrol_x && proposed_py==patrol_y));
+    wire chase_hit=((proposed_px==proposed_chaser_x &&
+                     proposed_py==proposed_chaser_y) ||
+                    (proposed_px==chaser_x && proposed_py==chaser_y) ||
+                    (player_x==proposed_chaser_x &&
+                     player_y==proposed_chaser_y &&
+                     proposed_px==chaser_x && proposed_py==chaser_y));
+
     always @(posedge clk or negedge reset_n) begin
         if(!reset_n) begin
-            dot_clear_valid<=1'b0;
-            dot_clear_x<=5'd0;
-            dot_clear_y<=5'd0;
+            proposed_valid<=0;resolved_valid<=0;
+            proposed_px<=0;proposed_py<=0;
+            proposed_patrol_x<=0;proposed_patrol_y<=0;
+            proposed_chaser_x<=0;proposed_chaser_y<=0;
+            proposed_patrol_dir<=0;proposed_chaser_dir<=0;
+            proposed_moved<=0;proposed_grace_active<=0;
+            resolved_hit<=0;resolved_collect<=0;
+        end else if(round_restart) begin
+            // A fresh game must cancel any outstanding event.
+            proposed_valid<=0;resolved_valid<=0;
         end else begin
-            dot_clear_valid<=frame_tick && state==PLAY && step_due && eat;
-            if(frame_tick && state==PLAY && step_due && eat) begin
-                dot_clear_x<=p_next_x;
-                dot_clear_y<=p_next_y;
+            proposed_valid<=step_request;
+            if(step_request) begin
+                proposed_px<=p_next_x;proposed_py<=p_next_y;
+                proposed_patrol_x<=patrol_nx;
+                proposed_patrol_y<=patrol_ny;
+                proposed_chaser_x<=chase_nx;proposed_chaser_y<=chase_ny;
+                proposed_patrol_dir<=patrol_choice;
+                proposed_chaser_dir<=chase_choice;
+                proposed_moved<=p_can_move;
+                // Capture protection before the frame's grace decrement.
+                proposed_grace_active<=(grace!=0);
+            end
+            resolved_valid<=proposed_valid;
+            if(proposed_valid) begin
+                resolved_hit<=(patrol_hit||chase_hit) &&
+                              !proposed_grace_active;
+                resolved_collect<=proposed_moved &&
+                                  dots[proposed_py][proposed_px];
             end
         end
     end
 
-    // Dot plane remains a 28x24 register map with one clearing write.
-    // Reset/start has precedence and cannot be undone by stale events.
+    // The map write now depends only on registered event/coordinates.
+    // A winning step clears its last dot in the same clock as the score.
     integer row;
     always @(posedge clk or negedge reset_n) begin
         if(!reset_n) begin
             for(row=0;row<24;row=row+1)
                 dots[row]<=initial_dots(row);
-        end else if(frame_tick &&
-            (reset_pending || (state!=PLAY && start_pending))) begin
+        end else if(round_restart) begin
             for(row=0;row<24;row=row+1)
                 dots[row]<=initial_dots(row);
-        end else if(dot_clear_valid) begin
-            dots[dot_clear_y][dot_clear_x]<=1'b0;
+        end else if(resolved_valid && resolved_eat) begin
+            dots[proposed_py][proposed_px]<=1'b0;
         end
     end
 
@@ -231,20 +265,24 @@ module mazechase_rgb_core #(
             chaser_x<=5'd25;chaser_y<=5'd21;chaser_dir<=WEST;
             frame_count<=0;blink<=0;grace<=0;
             score<=0;remaining<=DOT_TOTAL;lives<=3;
-        end else if(frame_tick) begin
-            blink<=blink+8'd1;
-            if(reset_pending || (state!=PLAY && start_pending)) begin
+        end else begin
+            if(frame_tick) blink<=blink+8'd1;
+            if(round_restart) begin
                 state<=reset_pending?READY:PLAY;
                 player_x<=SPAWN_X;player_y<=SPAWN_Y;
                 patrol_x<=5'd25;patrol_y<=5'd2;patrol_dir<=WEST;
                 chaser_x<=5'd25;chaser_y<=5'd21;chaser_dir<=WEST;
                 frame_count<=0;grace<=0;
                 score<=0;remaining<=DOT_TOTAL;lives<=3;
-            end else if(state==PLAY) begin
-                if(grace!=0) grace<=grace-8'd1;
-                if(step_due) begin
-                    frame_count<=0;
-                    if(mortal_collision) begin
+            end else begin
+                if(frame_tick && state==PLAY) begin
+                    if(grace!=0) grace<=grace-8'd1;
+                    if(step_due) frame_count<=0;
+                    else frame_count<=frame_count+8'd1;
+                end
+                // This commit path sees only registered hit/collect flags.
+                if(resolved_valid && state==PLAY) begin
+                    if(resolved_hit) begin
                         if(lives==1) begin
                             lives<=0;state<=LOST;
                         end else begin
@@ -257,18 +295,20 @@ module mazechase_rgb_core #(
                             chaser_dir<=WEST;
                         end
                     end else begin
-                        player_x<=p_next_x;player_y<=p_next_y;
-                        patrol_x<=patrol_nx;patrol_y<=patrol_ny;
-                        patrol_dir<=patrol_choice;
-                        chaser_x<=chase_nx;chaser_y<=chase_ny;
-                        chaser_dir<=chase_choice;
-                        if(eat) begin
+                        player_x<=proposed_px;player_y<=proposed_py;
+                        patrol_x<=proposed_patrol_x;
+                        patrol_y<=proposed_patrol_y;
+                        patrol_dir<=proposed_patrol_dir;
+                        chaser_x<=proposed_chaser_x;
+                        chaser_y<=proposed_chaser_y;
+                        chaser_dir<=proposed_chaser_dir;
+                        if(resolved_eat) begin
                             score<=score+10'd1;
                             remaining<=remaining-10'd1;
                             if(remaining==10'd1) state<=WON;
                         end
                     end
-                end else frame_count<=frame_count+8'd1;
+                end
             end
         end
     end
