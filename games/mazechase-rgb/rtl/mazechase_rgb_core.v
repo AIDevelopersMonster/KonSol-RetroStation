@@ -262,7 +262,7 @@ module mazechase_rgb_core #(
         else if(accepted) begin
             if(s_axis_tuser[0]) begin scan_x<=1;scan_y<=0;end
             else if(scan_x==10'd639) begin
-                scan_x<=0;scan_y<=scan_y==10'd479?10'd0:scan_y+10'd1;
+                scan_x<=0;scan_y<= (scan_y==10'd479) ? 10'd0 : (scan_y+10'd1);
             end else scan_x<=scan_x+10'd1;
         end
     end
@@ -289,7 +289,7 @@ module mazechase_rgb_core #(
     wire grid=in_arena && (dxpix[3:0]==0 || dypix[3:0]==0);
     wire border=px>=10'd93 && px<10'd547 &&
                 py>=10'd45 && py<10'd435 && !in_arena;
-    wire [9:0] shown_score=score>=10'd48?10'd384:{score[5:0],3'b0};
+    wire [9:0] shown_score=(score>=10'd48) ? 10'd384 : {score[5:0],3'b0};
     wire score_bar=(py>=10'd13 && py<10'd26 &&
         px>=10'd178 && px<10'd178+shown_score);
     wire life_bar=(py>=10'd12 && py<10'd27 &&
