@@ -1,6 +1,6 @@
 # RS-007 MAZE CHASE RGB v0.1.0 — independent Tang Nano 9K arcade
 
-**STATUS: SOURCE CANDIDATE. SIM / FIT / STA / BOARD must be verified independently. NOT RELEASED.**
+**STATUS: Icarus RTL SIM PASS (58 checks; GitHub Actions run 40465387709). Gowin FIT/STA NOT RUN. BOARD NOT RUN. NOT RELEASED.**
 
 Original maze-chase game with **28×24** cells and **455 reachable collectible dots** (maze connectivity prechecked), three lives, score, 2 non-identical enemies (simple wall-turning patrol and greedy Manhattan chaser), WIN/LOSS and 4 palettes.
 
