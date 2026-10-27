@@ -111,6 +111,29 @@
       "notes": "Operator reports working gameplay on Tang Nano 9K, 27 Oct 2026. Photo pending. SIM 28 checks, FIT 2437/8640 logic, positive sampled STA. Binary exact hash pinned; GitHub Release not yet uploaded."
     },
     {
+      "id": "konsol-mazechase-rgb-v0-1-0",
+      "name": "KonSol RetroStation MAZE CHASE RGB v0.1.0",
+      "hardware_class": "FPGA",
+      "board_ids": [
+        "tang-nano-9k"
+      ],
+      "implementation": "Original Verilog 28x24 maze game, 455 collectible dots, two enemies, HDMI/UART; no CPU",
+      "evidence_level": "operator_board_pass",
+      "source_url": "https://github.com/AIDevelopersMonster/KonSol-RetroStation/tree/main/games/mazechase-rgb",
+      "loader_url": "https://aidevelopersmonster.github.io/KonSol-RetroStation/console/",
+      "distribution": {
+        "status": "released",
+        "type": "gowin_fs",
+        "file": "konsol_mazechase_rgb_nano9k.fs",
+        "size_bytes": 2070601,
+        "sha256": "9c7228e420385fe8f68c094ad221d075e7a2a22df6cc28d6d299a858102ffb46",
+        "release_url": "https://github.com/AIDevelopersMonster/KonSol-RetroStation/releases/tag/konsol-mazechase-rgb-v0.1.0",
+        "download_url": "https://github.com/AIDevelopersMonster/KonSol-RetroStation/releases/download/konsol-mazechase-rgb-v0.1.0/konsol_mazechase_rgb_nano9k.fs"
+      },
+      "license_note": "Original gameplay MIT, SimpleVOut ISC, Gowin vendor terms. SRAM-only.",
+      "notes": "27 Oct 2026: operator reported game works on Tang Nano 9K; 64-check RTL SIM PASS; Setup/Hold 0 endpoints, Recovery and Removal positive in the PnR report. GitHub release contains 2,070,601 byte fs with exact SHA-256."
+    },
+    {
       "id": "arduino-uno-breakout-touch",
       "name": "Arkanoid / Breakout Touch for Arduino UNO",
       "hardware_class": "MCU",
