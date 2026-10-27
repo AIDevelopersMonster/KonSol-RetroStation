@@ -230,6 +230,10 @@ function keyProtocol(key) {
     if (["p", "r", "1", "2", "3", "4", " ", "enter"].includes(k)) return {once:k === "enter" || k === " " ? "p" : k};
     return null;
   }
+  if (current.id === "minitd") {
+    if (["1","2","3","4","t","b","p","c","r"," ","enter"].includes(k)) return {once:k === "enter" || k === " " ? "p" : k};
+    return null;
+  }
   if (current.id === "mazechase") {
     if (key === "ArrowUp") return {once:"w"};
     if (key === "ArrowLeft") return {once:"a"};
@@ -382,8 +386,8 @@ async function start() {
     const response = await fetch("./profiles.json", {cache:"no-store"});
     if (!response.ok) throw Error(`Profiles HTTP ${response.status}`);
     const data = await response.json();
-    if (data.schema_version !== 1 || !Array.isArray(data.profiles) || data.profiles.length !== 6 ||
-        !data.profiles.every(validateProfile) || new Set(data.profiles.map(p => p.id)).size !== 6) {
+    if (data.schema_version !== 1 || !Array.isArray(data.profiles) || data.profiles.length !== 7 ||
+        !data.profiles.every(validateProfile) || new Set(data.profiles.map(p => p.id)).size !== 7) {
       throw Error("Неверный список прошивок или SHA-256");
     }
     profiles = data.profiles;
