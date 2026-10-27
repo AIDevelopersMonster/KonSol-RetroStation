@@ -77,7 +77,20 @@ module tb_mazechase_rgb_core;
         check(playing && dut.state==1,"P starts the round");
         send("4");check(palette==3,"fourth palette");
         send("1");check(palette==0,"first palette");
-        step();
+        // The second game-frame edge queues the dot clear, but the RAM
+        // write must occur only on the following 25.2 MHz pixel clock.
+        frame();
+        @(negedge clk);user=1;
+        @(negedge clk);user=0;
+        check(dut.dot_clear_valid && dut.dot_clear_x==3 &&
+              dut.dot_clear_y==2,"dot clear event captures destination");
+        check(dut.dots[2][3] && dut.score==1,
+              "score committed before staged dot clear");
+        @(negedge clk);
+        check(!dut.dot_clear_valid && !dut.dots[2][3],
+              "dot bit cleared exactly one pixel clock later");
+        check(dut.dots[2][4] && dut.dots[3][3],
+              "other dots remain untouched");
         check(dut.player_x==3 && dut.player_y==2,"player moves one tile east");
         check(dut.score==1 && dut.remaining==454 && !dut.dots[2][3],
               "pellet eaten once and score incremented");
