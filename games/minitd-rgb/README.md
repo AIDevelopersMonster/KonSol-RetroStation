@@ -36,6 +36,22 @@ Expect `RS008_MINITD_TB_PASS checks=N` and `RS008_TB_EXIT_0` only after complete
 
 No SRAM or Flash operations. Capture the exact .fs SHA-256, byte count, logic/FF/BSRAM/PLL, clock domains and post-route Setup/Hold/Recovery/Removal. Do not alter SDC to hide violations.
 
+## Current 2026-10-27 Gowin candidate and exact SHA
+
+Gowin built `20261027_211950` successfully. Candidate:
+`games/minitd-rgb/build/20261027_211950/work/impl/pnr/konsol_minitd_rgb_nano9k.fs`.
+
+SHA-256: `AF37412F8C22B3825AD0E2095EEE241F20E0D2CD14FE38C3AD20CB3BAFFF1FB9`.
+The operator independently ran 41 Icarus checks successfully. **Gowin post-route timing is not yet verified.**
+
+Use the native Gowin HTML-table audit (no rebuild or FPGA programming):
+
+```powershell
+.\games\minitd-rgb\tools\audit_sta.ps1
+```
+
+Read `RS008_STA_VERDICT` and attach the generated `RS008_STA_EVIDENCE_*.zip` for timing-coverage and FPGA resource analysis. See [build acceptance receipt](acceptance/RS008_GOWIN_BUILD_2026-10-27.md).
+
 ## Hardware gate after full timing review
 
 1. SRAM-only JTAG load; HDMI stable, 24x16 route + 4 tower pads visible.
