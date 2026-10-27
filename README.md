@@ -6,6 +6,8 @@
 
 **Игровая WebUSB-консоль:** [открыть на GitHub Pages](https://aidevelopersmonster.github.io/KonSol-RetroStation/console/) *(после успешного развёртывания Pages)* · [исходники и инструкции](docs/console/README.md). Пять профилей: PONG, BREAKOUT, K-BLOCKS, LIGHT CYCLES, SPACE PATROL; SRAM only, SHA-256, Web Serial.
 
+**Four-game showcase video:** https://youtube.com/shorts/slVuWt4V09M (PONG, BREAKOUT, K-BLOCKS, LIGHT CYCLES; filmed before RS-006).
+
 **Project founded: 26 October 2026.** [Founding video — KonSol RetroStation: Project Day 1](https://youtu.be/Hjy9AaBeEGs).
 
 ## Русский
@@ -20,7 +22,7 @@
 
 | Направление | Проект | Статус | Исходники / запуск |
 | --- | --- | --- | --- |
-| FPGA / Tang Nano 9K | **SPACE PATROL RGB v0.1.0** | OPERATOR BOARD PASS; SIM 28/28, FIT/STA positive sampled margins, exact SHA-pinned .fs release pending | [Исходники](games/spacepatrol-rgb/README.md) · [Приёмка](games/spacepatrol-rgb/acceptance/RS006_BOARD_2026-10-27.md) · [Консоль](docs/console/README.md) |
+| FPGA / Tang Nano 9K | **SPACE PATROL RGB v0.1.0** | OPERATOR BOARD PASS; SIM 28/28, FIT/STA positive sampled margins, exact SHA-pinned .fs published | [Исходники](games/spacepatrol-rgb/README.md) · [Приёмка](games/spacepatrol-rgb/acceptance/RS006_BOARD_2026-10-27.md) · [Консоль](docs/console/README.md) |
 | FPGA / Tang Nano 9K | **LIGHT CYCLES RGB v0.1.0** | OPERATOR BOARD PASS 3/3; SIM 78/78, FIT/STA excerpts PASS; exact .fs pending release | [Исходники](games/lightcycles-rgb/README.md) · [Приёмка](games/lightcycles-rgb/acceptance/RS005_BOARD_2026-10-27.md) · [Консоль](docs/console/README.md) |
 | FPGA / Tang Nano 9K | **K-BLOCKS RGB v0.1.0** | OPERATOR BOARD PASS; SIM 53/53, Gowin PnR/STA excerpts checked; exact `.fs` local, release pending | [Исходники](games/kblocks-rgb/README.md) · [Отчёт](games/kblocks-rgb/acceptance/RS004_BOARD_2026-10-26.md) · [Консоль](docs/console/README.md) |
 | FPGA / Tang Nano 9K | **BREAKOUT RGB v0.1.0** | Оператор прошёл игру до победы; релиз SHA-256 подтверждён | [Исходники](https://github.com/AIDevelopersMonster/Sipeed-FPGA/tree/main/games/breakout-rgb) · [Релиз](https://github.com/AIDevelopersMonster/Sipeed-FPGA/releases/tag/konsol-breakout-rgb-v0.1.0) |
