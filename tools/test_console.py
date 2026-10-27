@@ -7,11 +7,13 @@ import subprocess
 
 root = pathlib.Path(__file__).resolve().parents[1]
 profiles = json.loads((root / "docs/console/profiles.json").read_text("utf-8"))["profiles"]
-assert [p["id"] for p in profiles] == ["pong", "breakout", "kblocks", "lightcycles", "spacepatrol", "mazechase"]
+assert [p["id"] for p in profiles] == ["pong", "breakout", "kblocks", "lightcycles", "spacepatrol", "mazechase", "minitd"]
 assert all(p["size_bytes"] == 2070601 for p in profiles)
-assert len({p["sha256"] for p in profiles}) == 6
+assert len({p["sha256"] for p in profiles}) == 7
 app = (root / "docs/console/app.js").read_text("utf-8")
 assert 'current.id === "mazechase"' in app
+assert 'current.id === "minitd"' in app
+assert 'id="minitd-quick"' in (root / "docs/console/index.html").read_text("utf-8")
 assert "FIXED_PROGRAM_ARGS" in app
 assert '["-c", "ft2232", "-b", "tangnano9k", "game.fs"]' in app
 assert 'crypto.subtle.digest("SHA-256", buffer)' in app
@@ -32,4 +34,4 @@ with tempfile.TemporaryDirectory() as d:
     x = json.loads((page / "console/firmware/manifest.json").read_text("utf-8"))
     assert len(x["profiles"]) == 6
     assert not any(p["published"] for p in x["profiles"])
-print("KONSOL_CONSOLE_STATIC_TEST_PASS: profiles=6, pinned-hash-only, SRAM-only, both browser transports")
+print("KONSOL_CONSOLE_STATIC_TEST_PASS: profiles=7, pinned-hash-only, SRAM-only, both browser transports")
