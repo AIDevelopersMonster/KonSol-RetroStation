@@ -4,7 +4,7 @@
 
 [Русский](#русский) · [English](#english) · [Architecture](docs/ARCHITECTURE.md) · [Project inventory](docs/INVENTORY.md) · [Roadmap](docs/ROADMAP.md) · [Machine-readable catalog](catalog/README.md) · [Next games for Tang Nano 9K](docs/FPGA_9K_GAMES_NEXT.md)
 
-**Игровая WebUSB-консоль:** [открыть на GitHub Pages](https://aidevelopersmonster.github.io/KonSol-RetroStation/console/) *(после успешного развёртывания Pages)* · [исходники и инструкции](docs/console/README.md). Пять профилей: PONG, BREAKOUT, K-BLOCKS, LIGHT CYCLES, SPACE PATROL; SRAM only, SHA-256, Web Serial.
+**Игровая WebUSB-консоль:** [открыть на GitHub Pages](https://aidevelopersmonster.github.io/KonSol-RetroStation/console/) *(после успешного развёртывания Pages)* · [исходники и инструкции](docs/console/README.md). **Семь профилей:** PONG, BREAKOUT, K-BLOCKS, LIGHT CYCLES, SPACE PATROL, MAZE CHASE, MINI TD; SRAM only, SHA-256, Web Serial. [Каталог всех семи игр](games/README.md).
 
 **Four-game showcase video:** https://youtube.com/shorts/slVuWt4V09M (PONG, BREAKOUT, K-BLOCKS, LIGHT CYCLES; filmed before RS-006).
 
